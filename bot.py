@@ -13,7 +13,7 @@ application=Flask(__name__)
 
 KST=timezone('Asia/Seoul')
 
-@application.route('/stid', methods=['POST'])
+@application.route('/colstid', methods=['POST'])
 def after_stid(): # 학번 입력 후
     
     req=request.get_json() # 파라미터 값 불러오기
@@ -67,7 +67,7 @@ def after_stid(): # 학번 입력 후
     print(res)
     return jsonify(res)
 
-@application.route('/type', methods=['POST'])
+@application.route('/coltype', methods=['POST'])
 def after_type(): # 유형 선택 후
      
     req=request.get_json() # 파라미터 값 불러오기
@@ -92,7 +92,7 @@ def after_type(): # 유형 선택 후
     }
     return jsonify(res)
 
-@application.route('/reason', methods=['POST'])
+@application.route('/colreason', methods=['POST'])
 def after_reason(): # 사유 선택 후
      
     req=request.get_json() # 파라미터 값 불러오기
@@ -135,7 +135,7 @@ def after_reason(): # 사유 선택 후
     }
     return jsonify(res)
 
-@application.route('/load', methods=['POST'])
+@application.route('/colload', methods=['POST'])
 def load_data(): # 경고/벌점 확인
      
     req=request.get_json() # 파라미터 값 불러오기
