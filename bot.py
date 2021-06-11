@@ -65,8 +65,8 @@ def after_stid(): # 학번 입력 후
 @application.route('/type', methods=['POST'])
 def after_type(): # 유형 선택 후
      
-    req=request.get_json() # 파라미터 값 불러오기
-	stid=req["action"]["clientExtra"]["stid"] # 부여할 
+   	req=request.get_json() # 파라미터 값 불러오기
+	stid=req["action"]["clientExtra"]["stid"] # 부여할 학번
     typei=req["action"]["clientExtra"]["type"] # 선택한 유형
     print(stid, typei)
     print(req["intent"]["id"])
