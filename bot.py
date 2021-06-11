@@ -53,7 +53,7 @@ def after_stid(): # 학번 입력 후
                                   "label": msg[:2],
                                   "messageText": msg,
                                   "blockId": "",
-                                  "extra": { "stid": stid, "type": msg[:2] })
+                                  "extra": { "stid": stid, "type": msg[:2] }})
         res={
             "version": "2.0",
             "template": {
@@ -78,7 +78,7 @@ def after_type(): # 유형 선택 후
                               "label": msg,
                               "messageText": "사유 : "+msg,
                               "blockId": "",
-                              "extra": { "stid": stid, "type": typei, "reason": msg })
+                              "extra": { "stid": stid, "type": typei, "reason": msg }})
     res={
         "version": "2.0",
         "template": {
@@ -112,7 +112,10 @@ def after_reason(): # 사유 선택 후
 			elif typei=="벌점": datapenalty=str(int(datapenalty)+1)
 			printmsg+="이후 : 경고 "+datawarning+"회, 벌점 "+datapenalty+"점\n사유 : "+reason
 			break
-    
+
+	now=datetime.datetime.utcnow()
+	print(utc.localize(now).astimezone(KST))
+	
     res={
         "version": "2.0",
         "template": {
