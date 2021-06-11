@@ -15,7 +15,7 @@ application=Flask(__name__)
 # 변수명 앞에 d가 붙은 것은 저장된 데이터에서 불러온 값, d가 붙지 않은 것은 현재 or 입력한 데이터 값
 
 KST=timezone('Asia/Seoul')
-Days = ["일요일","월요일","화요일","수요일","목요일","금요일","토요일"] # 요일 이름
+'''Days = ["일요일","월요일","화요일","수요일","목요일","금요일","토요일"] # 요일 이름
 mealname = ["아침","점심","저녁"] # 식사 이름
 mday = [31,28,31,30,31,30,31,31,30,31,30,31] # 매월 일 수
 Msg = [["[오늘 아침]","[오늘 점심]","[오늘 저녁]"],["[내일 아침]","[내일 점심]","[내일 저녁]"]] # 급식 title
@@ -292,227 +292,119 @@ def response_menu(): # 메뉴 대답 함수
             }
         }
     return jsonify(res)
-
-@application.route('/seat', methods=['POST'])
-def input_seat(): # 좌석 번호 입력 함수
+'''
+@application.route('/stid', methods=['POST'])
+def after_stid(): # 학번 입력 후
     
-    now=datetime.datetime.utcnow()
-    Day=int(utc.localize(now).astimezone(KST).strftime("%w"))
-    hour=int(utc.localize(now).astimezone(KST).strftime("%H"))
-    minu=int(utc.localize(now).astimezone(KST).strftime("%M"))
-    if (hour==6 and minu>=50) or (hour>=7 and hour<12) or (hour==12 and minu<30): Meal="아침" # 가장 최근 식사가 언제인지 자동 계산
-    elif (hour==12 and minu>=30) or (hour>=13 and hour<18) or (hour==18 and minu<30): Meal="점심"
-    else: 
-        Meal="저녁"
-        if (hour==6 and minu<50) or hour<=5 : Day=(Day+6)%7
-        
     req=request.get_json() # 파라미터 값 불러오기
-    userid=req["userRequest"]["user"]["properties"]["plusfriendUserKey"]
-    seat=req["action"]["detailParams"]["table_seat"]["value"]
-    p1=req["action"]["detailParams"]["student_id"]["value"] # 같이 앉은 사람
-    p2=req["action"]["detailParams"]["student_id1"]["value"] # 같이 앉은 사람
-    stid="none"; day=Day; meal=Meal
+    userid=req["userRequest"]["user"]["properties"]["plusfriendUserKey"] # 사용자 고유 키
+    stid=req["action"]["detailParams"]["student_id"]["value"] # 벌점 부여할 학번
+    #isstaff=False
+    isstaff=True
+    print(userid,stid)
     
-    if seat=='.': seat='X'
-    fr=open("/home/ubuntu/dg1s_bot/user data.txt","r") # userdata 저장 및 변경
+    '''fr=open("/home/ubuntu/dg1s_collab/staff_data.txt","r") # staff_data와 비교
     lines=fr.readlines()
     fr.close()
-    fw=open("/home/ubuntu/dg1s_bot/user data.txt","w")
     for line in lines:
-        datas=line.split(" ")
-        dusid=datas[0]; dstid=datas[1]; dday=datas[2] # data 불러오기
-        dmeal=datas[3]; dp1=datas[5]; dp2=datas[6].rstrip('\n')
-        if dusid==userid:
-            stid=dstid
-            if dday!="7": day=int(dday) # 요일
-            if dmeal!="none": meal=dmeal # 식사
-            if p1=="none" and p2=="none": # 같이 앉은 사람
-                p1=dp1; p2=dp2
-            elif p1!="none" and p2=="none": # 항상 p1이 p2보다 우선적으로 채워지도록
-                if dp1=="none" and dp2=="none": p1=p1; p2=dp2
-                elif dp1!="none" and dp2=="none": p2=p1; p1=dp1
-                elif dp1!="none" and dp2!="none": p2=p1; p1=dp2
-        else : fw.write(line)
-    if p2==stid or p2==p1: p2="none" # 입력한 사람이 자기 자신이거나 중복일 경우
-    if p1==stid: p1="none"
-    fw.write(userid+" "+stid+" "+str(day)+" "+meal+" "+seat+" "+p1+" "+p2+"\n")
-    fw.close()
+        if userid==line.rstrip("\n") : isstaff=True'''
         
-    if stid=="none": # 등록 안된 user
+    if isstaff==False: # 생교부원이 아니다
         res={
             "version": "2.0",
             "template": {
                 "outputs": [
                     {
-                        "basicCard": {
-                            "title": "[학번 등록]",
-                            "description": "학번이 등록되어 있지 않습니다.\n아래 버튼을 눌러 학번을 등록해주세요",
-                            "buttons": [ { "action": "message", "label": "학번 등록", "messageText": "학번 등록" } ]
+                        "simpleText": {
+                            "text": "권한이 없습니다."  
                         }
                     }
                 ]
             }
         }
     else:
-        stids=stid
-        if p1!="none" and p1!=stid: stids+=", "+p1 
-        if p2!="none" and p2!=stid and p2!=p1: stids+=", "+p2
-        
-        quickreplies=[] # 사용자가 기록하지 않은 급식을 찾아서 바로가기 응답 형태로 제공
-        checkrecord=[[True,False,False],[False,False,False],[False,False,False],[False,False,False],[False,False,True]]
-        fr=open("/home/ubuntu/dg1s_bot/final save.txt","r")
-        lines=fr.readlines()
-        fr.close()
-        for line in lines:
-            if line==lines[0]: continue
-            if line[:4]==stids[:4] and "none" not in line and (line[5]!='0' and line[5]!='6'): checkrecord[int(line[5])-1][int(line[7])]=True # 기록했으면 True
-        for i in range(5):
-            if i+1 > Day: break
-            for j in range(3):
-                if i+1==Day and j>mealname.index(Meal): break
-                if checkrecord[i][j]==False: # 현재까지의 급식 중 기록을 하지 않았다면 목록에 추가
-                    quickreplies.append({ "action": "block",
-                                          "label": Days[i+1]+' '+mealname[j],
-                                          "messageText": Days[i+1]+' '+mealname[j]+"으로 변경",
-                                          "blockId": "605ee41c6daec409bd3bd43d",
-                                          "extra": { "meal": str(i+1)+mealname[j] } })
-        quickreplies.reverse() # 최근 급식부터 보여주기 위해 역순
-        
+        quickReplies=[] # 경고/벌점을 바로가기 응답 형태로 제공
+        msgtxt=["경고 1회 추가","벌점 1점 추가"]
+        for msg in msgtxt:
+            quickReplies.append({ "action": "block",
+                                  "label": msg[:2],
+                                  "messageText": msg,
+                                  "blockId": "",
+                                  "extra": { "stid": stid, "type": msg[:2] })
         res={
             "version": "2.0",
             "template": {
-                "outputs": [
-                    {
-                        "carousel": {
-                            "type": "basicCard",
-                            "items": [
-                                {
-                                    "title": "[저장 확인]",
-                                    "description": "학번    "+stids+"\n날짜    "+Days[day]+"\n식사    "+meal+"\n좌석    "+seat,
-                                    "buttons": [
-                                        { "action": "message", "label": "확인", "messageText": "확인했습니다." },
-                                        { "action": "message", "label": "초기화", "messageText": "초기화" }
-                                    ]
-                                },
-                                { 
-                                    "thumbnail":{
-                                        "imageUrl": "http://k.kakaocdn.net/dn/m2tci/btqOvcSDnnh/STY3XTAYC37ce8RYvulrX0/img_l.jpg", "fixedRatio": "true"
-                                    } 
-                                }
-                            ]
-                        }
-                    }
-                ],
-                "quickReplies": quickreplies
+                "quickReplies": quickReplies
             }
         }
-    '''yourstats=""
-    if stid!="none" and stid[0]=="2": 
-        yourstats="[통계 결과]\n"+"기간 : 3월 1주차~4월 4주차(총 8주)\n"+"학번 : "+stid+"\n총 참여율 : "+str(round(statsdict[stid][0]*100,2))+"%\n순위 : "+str(statsdict[stid][1])+"/80"
-    res={
-            "version": "2.0",
-            "template": {
-                "outputs": [
-                    {
-                        "simpleText": {
-                            "text": "[사용 불가]\n"+"지정좌석제로 인해 잠정 중단된 기능입니다."
-                        }
-                    },
-                    {
-                        "simpleText": {
-                            "text": yourstats
-                        }
-                    }
-                ]
-            }
-        }'''
     return jsonify(res)
 
-@application.route('/chme', methods=['POST'])
-def change_meal(): # 식사 변경 함수
-  
-    now=datetime.datetime.utcnow()
-    Day=int(utc.localize(now).astimezone(KST).strftime("%w"))
-    hour=int(utc.localize(now).astimezone(KST).strftime("%H"))
-    minu=int(utc.localize(now).astimezone(KST).strftime("%M"))
-    if (hour==6 and minu>=50) or (hour>=7 and hour<12) or (hour==12 and minu<30): Meal="아침" # 가장 최근 식사가 언제인지 자동 계산
-    elif (hour==12 and minu>=30) or (hour>=13 and hour<18) or (hour==18 and minu<30): Meal="점심"
-    else: 
-        Meal="저녁"
-        if (hour==6 and minu<50) or hour<=5 : Day=(Day+6)%7
-    
+@application.route('/type', methods=['POST'])
+def after_type(): # 유형 선택 후
+     
     req=request.get_json() # 파라미터 값 불러오기
-    userid=req["userRequest"]["user"]["properties"]["plusfriendUserKey"]
-    extra=req["action"]["clientExtra"]["meal"]
-    
-    day=extra[0]; meal=extra[1:3] # user data에서 식사 변경
-    fr=open("/home/ubuntu/dg1s_bot/user data.txt","r")
+	stid=req["action"]["clientExtra"]["stid"] # 부여할 학번
+    typei=req["action"]["clientExtra"]["type"] # 선택한 유형
+    print(stid, typei)
+    print(req["intent"]["id"])
+                                 
+    quickReplies=[] # 사유를 바로가기 응답 형태로 제공
+    msgtxt=["미소등","책상 미정리","의자 미정리","콘센트","캐리어"]
+    for msg in msgtxt:
+        quickReplies.append({ "action": "block",
+                              "label": msg,
+                              "messageText": "사유 : "+msg,
+                              "blockId": "",
+                              "extra": { "stid": stid, "type": typei, "reason": msg })
+    res={
+        "version": "2.0",
+        "template": {
+            "quickReplies": quickReplies
+        }
+    }
+    return jsonify(res)
+
+@application.route('/reason', methods=['POST'])
+def after_reason(): # 사유 선택 후
+     
+    req=request.get_json() # 파라미터 값 불러오기
+	stid=req["action"]["clientExtra"]["stid"] # 부여할 학번
+    typei=req["action"]["clientExtra"]["type"] # 선택한 유형
+    reason=req["action"]["clientExtra"]["reason"] # 선택한 사유
+	printmsg=""
+    print(stid,typei,reason)
+    print(req["intent"]["id"])
+                                 
+    fr=open("/home/ubuntu/dg1s_collab/student_data.txt","r") # student_data에 업데이트
     lines=fr.readlines()
     fr.close()
-    fw=open("/home/ubuntu/dg1s_bot/user data.txt","w")
     for line in lines:
-        datas=line.split(" ")
-        dusid=datas[0]; dstid=datas[1]; dseat=datas[4]; dp1=datas[5]; dp2=datas[6].rstrip('\n')
-        if dusid==userid:
-            stids=dstid
-            if dp1!="none" and dp1!=dstid: stids+=", "+dp1 
-            if dp2!="none" and dp2!=dstid and dp2!=dp1: stids+=", "+dp2
-            seat=dseat
-            fw.write(userid+" "+dstid+" "+day+" "+meal+" "+dseat+" "+dp1+" "+dp2+"\n")
-        else : fw.write(line)
-    fw.close()
-    
-    quickreplies=[] # 사용자가 기록하지 않은 급식을 찾아서 바로가기 응답 형태로 제공
-    checkrecord=[[True,False,False],[False,False,False],[False,False,False],[False,False,False],[False,False,True]]
-    fr=open("/home/ubuntu/dg1s_bot/final save.txt","r")
-    lines=fr.readlines()
-    fr.close()
-    for line in lines:
-        if line==lines[0]: continue
-        if line[:4]==stids[:4] and "none" not in line and (line[5]!='0' and line[5]!='6'): checkrecord[int(line[5])-1][int(line[7])]=True # 기록했으면 True
-    for i in range(5):
-        if i+1 > Day: break
-        for j in range(3):
-            if i+1==Day and j>mealname.index(Meal): break
-            if checkrecord[i][j]==False: # 현재까지의 급식 중 기록을 하지 않았다면 목록에 추가
-                quickreplies.append({ "action": "block",
-                                      "label": Days[i+1]+' '+mealname[j],
-                                      "messageText": Days[i+1]+' '+mealname[j]+"으로 변경",
-                                      "blockId": "605ee41c6daec409bd3bd43d",
-                                      "extra": { "meal": str(i+1)+mealname[j] } })
-    quickreplies.reverse() # 최근 급식부터 보여주기 위해 역순
+		data=line.split(' ')
+		datastid=data[0]
+		if stid==datastid:
+			datawarning=data[1]
+			datapenalty=data[2]
+			printmsg=stid+"\n이전 : 경고 "+datawarning+"회, 벌점 "+datapenalty+"점\n"
+			if typei=="경고": datawarning=str(int(datawarning)+1)
+			elif typei=="벌점": datapenalty=str(int(datapenalty)+1)
+			printmsg+="이후 : 경고 "+datawarning+"회, 벌점 "+datapenalty+"점\n사유 : "+reason
+			break
     
     res={
         "version": "2.0",
         "template": {
             "outputs": [
                 {
-                    "carousel": {
-                        "type": "basicCard",
-                        "items": [
-                            {
-                                "title": "[저장 확인]",
-                                "description": "학번    "+stids+"\n날짜    "+Days[int(day)]+"\n식사    "+meal+"\n좌석    "+seat,
-                                "buttons": [
-                                    { "action": "message", "label": "확인", "messageText": "확인했습니다." },
-                                    { "action": "message", "label": "초기화", "messageText": "초기화" }
-                                ]
-                            },
-                            { 
-                                "thumbnail":{
-                                   "imageUrl": "http://k.kakaocdn.net/dn/m2tci/btqOvcSDnnh/STY3XTAYC37ce8RYvulrX0/img_l.jpg", "fixedRatio": "true"
-                                } 
-                            }
-                       ]
+                    "simpleText": {
+                        "text": printmsg
                     }
                 }
-            ],
-            "quickReplies": quickreplies
+            ]
         }
     }
     return jsonify(res)
-   
-  
+
+'''  
 @application.route('/stid', methods=['POST'])
 def input_stid(): # 학번 입력 함수
         
@@ -699,13 +591,13 @@ def update_stid(): # 학번 갱신 함수
         }
     }
     return jsonify(res)
- 
+'''
 @application.route('/')
 def index():
     return render_template("index.html")
 
 filename=""
-
+'''
 @application.route('/texteditor')
 def text_editor(): # 원하는 파일 사이트에서 보여주고 편집
     global filename
@@ -714,7 +606,7 @@ def text_editor(): # 원하는 파일 사이트에서 보여주고 편집
     data_send=fr.readlines()
     fr.close()
     if filename=="user data": data_send.sort(key=lambda x:x[13:17]) # 학번 순 정렬
-    return render_template("texteditor.html",data=data_send, name=filename)
+    return render_template("texteditor.html",data=data_send,name=filename)
 
 @application.route('/filesave', methods=['GET','POST'])
 def save_as_file(): # txt file 저장하기
@@ -763,7 +655,7 @@ def upload_n_download():
     for folder in folders:
         files.remove(folder)
     return render_template("file.html", files=files)
-
+'''
 @application.route('/status')
 def record_status():
     index=int(request.args.get('index'))
@@ -801,10 +693,6 @@ def record_status():
         record[i][13]=str(round((record[i][13]/mealN)*100))+'%'
     
     return render_template("status.html", n=n, stid=stid, name=name, record=record)
-
-@application.route('/ball')
-def ball():
-    return render_template("Ball.html")
 
 if __name__ == "__main__":
     application.run(host='0.0.0.0', port=5000)
