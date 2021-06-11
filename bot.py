@@ -28,7 +28,6 @@ def after_stid(): # 학번 입력 후
     fr.close()
     for line in lines:
         if userid==line.rstrip("\n") : isstaff=True'''
-    print("where1")
     if isstaff==False: # 생교부원이 아니다
         print("where2")
         res={
@@ -44,7 +43,6 @@ def after_stid(): # 학번 입력 후
             }
         }
     else:
-        print("where3")
         quickReplies=[] # 경고/벌점을 바로가기 응답 형태로 제공
         msgtxt=["경고 1회 추가","벌점 1점 추가"]
         for msg in msgtxt:
@@ -66,7 +64,7 @@ def after_stid(): # 학번 입력 후
                 "quickReplies": quickReplies
             }
         }
-    print("where4")
+    print(res)
     return jsonify(res)
 
 @application.route('/type', methods=['POST'])
