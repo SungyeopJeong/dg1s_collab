@@ -227,7 +227,7 @@ def fall_back():
         staff=req["action"]["detailParams"]["staff"]["value"] # 생교부원 학번 이름    
         stid=req["action"]["detailParams"]["stid"]["value"] # 부여할 학번
         typei=req["action"]["detailParams"]["type"]["value"] # 선택한 유형
-        printmsg=give_wp(staff,stid,typei,utter)
+        printmsg=give_wp(staff,stid,typei,utter.replace(' ','_'))
         
         res={
             "version": "2.0",
