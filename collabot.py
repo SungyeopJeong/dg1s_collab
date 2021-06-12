@@ -54,18 +54,10 @@ def after_stid(): # 학번 입력 후
         res={
             "version": "2.0",
             "template": {
-                "output": [
-                    {
-                        "simpleText": {
-                            "text": "welcome"  
-                        }
-                    }
-                ]#,
-                #"quickReplies": quickReplies
+                "quickReplies": quickReplies
             }
         }
-    return jsonify(res)
-    print(res)
+    return "hi"
 
 @application.route('/coltype', methods=['POST'])
 def after_type(): # 유형 선택 후
