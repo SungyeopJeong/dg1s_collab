@@ -69,8 +69,8 @@ def after_stid(): # 학번 입력 후
 @application.route('/coltype', methods=['POST'])
 def after_type(): # 유형 선택 후
     
-    print(req["intent"]["id"])
     req=request.get_json() # 파라미터 값 불러오기
+    print(req["intent"]["id"])
     stid=req["action"]["clientExtra"]["stid"] # 부여할 학
     typei=req["action"]["clientExtra"]["type"] # 선택한 유형
     print(stid, typei)
@@ -94,8 +94,8 @@ def after_type(): # 유형 선택 후
 @application.route('/colreason', methods=['POST'])
 def after_reason(): # 사유 선택 후
     
-    print(req["intent"]["id"])
     req=request.get_json() # 파라미터 값 불러오기
+    print(req["intent"]["id"])
     stid=req["action"]["clientExtra"]["stid"] # 부여할 학번
     typei=req["action"]["clientExtra"]["type"] # 선택한 유형
     reason=req["action"]["clientExtra"]["reason"] # 선택한 사유
