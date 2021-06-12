@@ -112,7 +112,7 @@ def after_type(): # 유형 선택 후
 @application.route('/colask',methods=['POST'])
 def ask_etc_reason():
 
-    res={ # etc_reason OUTPUT context에 etc parameter 추가
+    res={ # etc_reason OUTPUT context에 parameter 추가
         "version": "2.0",
         "context": {
             "values": [
@@ -120,7 +120,7 @@ def ask_etc_reason():
                     "name": "etc_reason",
                     "lifeSpan": 1,
                     "params": {
-                        "checked": "etc"
+                        "checked": "true"
                     }
                 }
             ]
@@ -207,7 +207,8 @@ def after_etc_reason():
     
     req=request.get_json() # 파라미터 값 불러오기
     etc_reason=req["userRequest"]["utterance"] # 입력한 내용
-    print(etc_reason)
+    checked=req["action"]["detailParams"]["checked"]["value"]
+    print(etc_reason,check)
     
     res={
         "version": "2.0",
