@@ -268,6 +268,15 @@ def fall_back():
         }
     return jsonify(res)
 
+@application.route('/colstdata')
+def show_stdata():
+    
+    fr=open("/home/ubuntu/dg1s_collab/student_data.txt","r") # student_data 불러와서
+    data=fr.read()
+    fr.close()
+    
+    return data
+
 '''
 @application.route('/excel', methods=['POST'])
 def to_excel(): # 엑셀 파일로 생성
