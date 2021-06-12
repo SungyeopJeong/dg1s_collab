@@ -128,6 +128,7 @@ def after_reason(): # 사유 선택 후
     
     fw=open("/home/ubuntu/dg1s_collab/student_data.txt","w") # student_data 수정
     fw2=open("/home/ubuntu/dg1s_collab/log.txt","a") # log 기록
+    print(lines)
     for line in lines:
         data=line.rstrip("\n").split(' ')
         datastid=data[0]
