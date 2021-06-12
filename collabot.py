@@ -208,7 +208,7 @@ def after_etc_reason():
     req=request.get_json() # 파라미터 값 불러오기
     etc_reason=req["userRequest"]["utterance"] # 입력한 내용
     checked=req["action"]["detailParams"]["checked"]["value"]
-    print(etc_reason,check)
+    print(etc_reason,checked)
     
     res={
         "version": "2.0",
