@@ -80,7 +80,7 @@ def after_type(): # 유형 선택 후
         quickReplies.append({ "action": "block",
                               "label": msg,
                               "messageText": "사유 : "+msg,
-                              "blockId": "",
+                              "blockId": "60c3a77bcb976d4f0ad40ffa",
                               "extra": { "stid": stid, "type": typei, "reason": msg }})
     res={
         "version": "2.0",
