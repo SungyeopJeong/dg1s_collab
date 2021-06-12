@@ -64,17 +64,16 @@ def after_stid(): # 학번 입력 후
                 "quickReplies": quickReplies
             }
         }
-    print(res)
     return jsonify(res)
 
 @application.route('/coltype', methods=['POST'])
 def after_type(): # 유형 선택 후
-     
+    
+    print(req["intent"]["id"])
     req=request.get_json() # 파라미터 값 불러오기
     stid=req["action"]["clientExtra"]["stid"] # 부여할 학
     typei=req["action"]["clientExtra"]["type"] # 선택한 유형
     print(stid, typei)
-    print(req["intent"]["id"])
                                  
     quickReplies=[] # 사유를 바로가기 응답 형태로 제공
     msgtxt=["미소등","책상 미정리","의자 미정리","콘센트","캐리어"]
@@ -94,14 +93,14 @@ def after_type(): # 유형 선택 후
 
 @application.route('/colreason', methods=['POST'])
 def after_reason(): # 사유 선택 후
-     
+    
+    print(req["intent"]["id"])
     req=request.get_json() # 파라미터 값 불러오기
     stid=req["action"]["clientExtra"]["stid"] # 부여할 학번
     typei=req["action"]["clientExtra"]["type"] # 선택한 유형
     reason=req["action"]["clientExtra"]["reason"] # 선택한 사유
     printmsg=""
     print(stid,typei,reason)
-    print(req["intent"]["id"])
                                  
     fr=open("/home/ubuntu/dg1s_collab/student_data.txt","r") # student_data에 업데이트
     lines=fr.readlines()
