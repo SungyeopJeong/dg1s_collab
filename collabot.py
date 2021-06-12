@@ -105,7 +105,9 @@ def after_type(): # 유형 선택 후
 @application.route('/colreason', methods=['POST'])
 def after_reason(): # 사유 선택 후
     
-    now=datetime.datetime.utcnow()
+    now=datetime.datetime.utcnow() # 현재 시간
+    time='['+utc.localize(now).astimezone(KST).strftime("%Y-%m-%d %H:%M:%S")+']'
+    
     req=request.get_json() # 파라미터 값 불러오기
     staff=req["action"]["clientExtra"]["staff"] # 생교부원 학번 이름    
     stid=req["action"]["clientExtra"]["stid"] # 부여할 학번
@@ -120,7 +122,7 @@ def after_reason(): # 사유 선택 후
     fr.close()
     
     fw=open("/home/ubuntu/dg1s_collab/backup.txt","a") # 혹시 모르니 백업
-    fw.write('['+utc.localize(now).astimezone(KST)[:18]+'] '+staff+"의 기록 이전 데이터\n")
+    fw.write(time+' '+staff+"의 기록 이전 데이터\n")
     fw.write(backup+"\n")
     fw.close()
     
@@ -145,7 +147,7 @@ def after_reason(): # 사유 선택 후
             
             printmsg+="> 경고 "+datawarning+"회, 벌점 "+datapenalty+"점\n사유 : "+reason
             logmsg+=datawarning+' '+datapenalty
-            fw2.write('['+utc.localize(now).astimezone(KST)[:18]+'] '+staff+", "+logmsg+"\n")
+            fw2.write(time+' '+staff+", "+logmsg+"\n")
         fw.write(datastid+' '+datawarning+' '+datapenalty+' '+' '.join(datareason)+"\n")
     fw.close()
     fw2.close()
