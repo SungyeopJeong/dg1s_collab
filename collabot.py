@@ -86,7 +86,7 @@ def after_type(): # 유형 선택 후
             quickReplies.append({ "action": "block",
                               "label": msg,
                               "messageText": "사유 : "+msg,
-                              "blockId": "",
+                              "blockId": "60c4a96bc13fe4037f226823",
                               "extra": { "staff": staff, "stid": stid, "type": typei, "reason": msg }})
         else :
             quickReplies.append({ "action": "block",
@@ -105,6 +105,34 @@ def after_type(): # 유형 선택 후
                 }
             ],
             "quickReplies": quickReplies
+        }
+    }
+    return jsonify(res)
+
+@application.route('/colask',methods=['POST'])
+def ask_etc_reason():
+
+    res={ # etc_reason OUTPUT context에 etc parameter 추가
+        "version": "2.0",
+        "context": {
+            "values": [
+                {
+                    "name": "etc_reason",
+                    "lifeSpan": 1,
+                    "params": {
+                        "checked": "etc"
+                    }
+                }
+            ]
+        },
+        "template": {
+            "outputs": [
+                {
+                    "simpleText": {
+                        "text": "기타 사유를 입력해주세요."
+                    }
+                }
+            ]
         }
     }
     return jsonify(res)
@@ -167,35 +195,6 @@ def after_reason(): # 사유 선택 후
                 {
                     "simpleText": {
                         "text": printmsg
-                    }
-                }
-            ]
-        }
-    }
-    return jsonify(res)
-
-@application.route('/colask',methods=['POST'])
-def ask_etc_reason():
-    req=request.get_json()
-    print(req["intent"]["id"])
-    res={ # etc_reason OUTPUT context에 etc parameter 추가
-        "version": "2.0",
-        "context": {
-            "values": [
-                {
-                    "name": "etc_reason",
-                    "lifeSpan": 1,
-                    "params": {
-                        "checked": "etc"
-                    }
-                }
-            ]
-        },
-        "template": {
-            "outputs": [
-                {
-                    "simpleText": {
-                        "text": "기타 사유를 입력해주세요."
                     }
                 }
             ]
