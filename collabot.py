@@ -110,7 +110,7 @@ def after_reason(): # 사유 선택 후
     lines=fr.readlines()
     fr.close()
     for line in lines:
-        data=line.split(' ')
+        data=line.rstrip("\n").split(' ')
         datastid=data[0]
         if stid==datastid:
             datawarning=data[1]
