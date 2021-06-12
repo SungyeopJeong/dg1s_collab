@@ -21,7 +21,7 @@ def after_stid(): # 학번 입력 후
     stid=req["action"]["detailParams"]["student_id"]["value"] # 벌점 부여할 학번
     #isstaff=False
     isstaff=True
-    print(userid)
+    print(userid,stid)
     '''fr=open("/home/ubuntu/dg1s_collab/staff_data.txt","r") # staff_data와 비교
     lines=fr.readlines()
     fr.close()
@@ -34,7 +34,7 @@ def after_stid(): # 학번 입력 후
                 "outputs": [
                     {
                         "simpleText": {
-                            "text": "권한이 없습니다."  
+                            "text": "권한이 없습니다." 
                         }
                     }
                 ]
@@ -55,7 +55,7 @@ def after_stid(): # 학번 입력 후
                 "outputs":[
                     {
                         "simpleText": {
-                            "text": "경고/벌점을 선택해주세요"
+                            "text": "경고/벌점을 선택해주세요."
                         }
                     }
                 ],
@@ -68,12 +68,12 @@ def after_stid(): # 학번 입력 후
 def after_type(): # 유형 선택 후
     
     req=request.get_json() # 파라미터 값 불러오기
-    stid=req["action"]["clientExtra"]["stid"] # 부여할 학
+    stid=req["action"]["clientExtra"]["stid"] # 부여할 학번
     typei=req["action"]["clientExtra"]["type"] # 선택한 유형
-    print(stid, typei)
                                  
     quickReplies=[] # 사유를 바로가기 응답 형태로 제공
-    msgtxt=["미소등","책상 미정리","의자 미정리","콘센트","캐리어"]
+    if typei=="경고": msgtxt=["미소등","책상 미정리","의자 미정리","콘센트","기타"]
+    elif typei=="벌점": msgtxt=["캐리어","30분 이후 통행","타학생 책상에 두고 미정리"]
     for msg in msgtxt:
         quickReplies.append({ "action": "block",
                               "label": msg,
@@ -86,7 +86,7 @@ def after_type(): # 유형 선택 후
             "outputs":[
                 {
                     "simpleText": {
-                        "text": "사유를 선택해주세요"
+                        "text": "사유를 선택해주세요."
                     }
                 }
             ],
@@ -99,30 +99,47 @@ def after_type(): # 유형 선택 후
 def after_reason(): # 사유 선택 후
     
     req=request.get_json() # 파라미터 값 불러오기
-    print(req["intent"]["id"])
     stid=req["action"]["clientExtra"]["stid"] # 부여할 학번
     typei=req["action"]["clientExtra"]["type"] # 선택한 유형
     reason=req["action"]["clientExtra"]["reason"] # 선택한 사유
-    printmsg=""
-    print(stid,typei,reason)
+    printmsg="" # 출력용 메시지
+    logmsg="" # log 기록용 메시지
                                  
-    fr=open("/home/ubuntu/dg1s_collab/student_data.txt","r") # student_data에 업데이트
+    fr=open("/home/ubuntu/dg1s_collab/student_data.txt","r") # student_data 불러와서
+    backup=fr.read()
     lines=fr.readlines()
     fr.close()
+    
+    fw=open("/home/ubuntu/dg1s_collab/backup.txt","a") # 혹시 모르니 백업
+    fw.write(utc.localize(now).astimezone(KST)[:18]+" 이전의 데이터\n")
+    fw.write(backup+"\n")
+    fw.close()
+    
+    fw=open("/home/ubuntu/dg1s_collab/student_data.txt","w") # student_data 수정
+    fw2=open("/home/ubuntu/dg1s_collab/log.txt","w") # log 기록
     for line in lines:
         data=line.rstrip("\n").split(' ')
         datastid=data[0]
+        datawarning=data[1]
+        datapenalty=data[2]
+        datareason=data[3:]
         if stid==datastid:
-            datawarning=data[1]
-            datapenalty=data[2]
-            printmsg=stid+"\n이전 : 경고 "+datawarning+"회, 벌점 "+datapenalty+"점\n"
-            if typei=="경고": datawarning=str(int(datawarning)+1)
-            elif typei=="벌점": datapenalty=str(int(datapenalty)+1)
-            printmsg+="이후 : 경고 "+datawarning+"회, 벌점 "+datapenalty+"점\n사유 : "+reason
-            break
-
-    now=datetime.datetime.utcnow()
-    print(utc.localize(now).astimezone(KST))
+            printmsg="[부여 완료]\n대상 : "+stid+"\n경고 "+datawarning+"회, 벌점 "+datapenalty+"점\n"
+            logmsg=stid+" : "+datawarning+' '+datapenalty+' > '
+            
+            if typei=="경고": datawarning=str(int(datawarning)+1) # 경고 추가
+            elif typei=="벌점": datapenalty=str(int(datapenalty)+1) # 벌점 추가
+            if datawarning=='3': # 경고 3회면 벌점 1점으로
+                datawarning='0'
+                datapenalty=str(int(datapenalty)+1)
+            datareason.append(reason)
+            
+            printmsg+="> 경고 "+datawarning+"회, 벌점 "+datapenalty+"점\n사유 : "+reason
+            logmsg+=datawarning+' '+datapenalty
+            fw2.write(utc.localize(now).astimezone(KST)[:18]+' '+logmsg+"\n")
+        fw.write(datastid+' '+datawarning+' '+datapenalty+' '+' '.join(datareason)+"\n")
+    fw.close()
+    fw2.close()
     
     res={
         "version": "2.0",
@@ -149,7 +166,7 @@ def load_data(): # 경고/벌점 확인
             "outputs": [
                 {
                     "simpleText": {
-                        "text": "hi"
+                        "text": "아직 "
                     }
                 }
             ]
