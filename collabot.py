@@ -21,12 +21,18 @@ def after_stid(): # 학번 입력 후
     stid=req["action"]["detailParams"]["student_id"]["value"] # 벌점 부여할 학번
     #isstaff=False
     isstaff=True
+    staff=""
+    
     print(userid,stid)
-    '''fr=open("/home/ubuntu/dg1s_collab/staff_data.txt","r") # staff_data와 비교
+    
+    fr=open("/home/ubuntu/dg1s_collab/staff_data.txt","r") # staff_data와 비교
     lines=fr.readlines()
     fr.close()
     for line in lines:
-        if userid==line.rstrip("\n") : isstaff=True'''
+        if userid in line: 
+            isstaff=True
+            staff=line.split(' ')[0]+' '+line.split(' ')[1] # staff 학번과 이름
+    
     if isstaff==False: # 생교부원이 아니다
         res={
             "version": "2.0",
@@ -48,7 +54,7 @@ def after_stid(): # 학번 입력 후
                                   "label": msg[:2],
                                   "messageText": msg,
                                   "blockId": "60c3a762a0293f369849360a",
-                                  "extra": { "stid": stid, "type": msg[:2] }})
+                                  "extra": { "staff": staff, "stid": stid, "type": msg[:2] }})
         res={
             "version": "2.0",
             "template": {
@@ -68,6 +74,7 @@ def after_stid(): # 학번 입력 후
 def after_type(): # 유형 선택 후
     
     req=request.get_json() # 파라미터 값 불러오기
+    staff=req["action"]["clientExtra"]["staff"] # 생교부원 학번 이름
     stid=req["action"]["clientExtra"]["stid"] # 부여할 학번
     typei=req["action"]["clientExtra"]["type"] # 선택한 유형
                                  
@@ -79,7 +86,7 @@ def after_type(): # 유형 선택 후
                               "label": msg,
                               "messageText": "사유 : "+msg,
                               "blockId": "60c3a77bcb976d4f0ad40ffa",
-                              "extra": { "stid": stid, "type": typei, "reason": msg }})
+                              "extra": { "staff": staff, "stid": stid, "type": typei, "reason": msg }})
     res={
         "version": "2.0",
         "template": {
@@ -99,6 +106,7 @@ def after_type(): # 유형 선택 후
 def after_reason(): # 사유 선택 후
     
     req=request.get_json() # 파라미터 값 불러오기
+    staff=req["action"]["clientExtra"]["staff"] # 생교부원 학번 이름    
     stid=req["action"]["clientExtra"]["stid"] # 부여할 학번
     typei=req["action"]["clientExtra"]["type"] # 선택한 유형
     reason=req["action"]["clientExtra"]["reason"] # 선택한 사유
@@ -111,7 +119,7 @@ def after_reason(): # 사유 선택 후
     fr.close()
     
     fw=open("/home/ubuntu/dg1s_collab/backup.txt","a") # 혹시 모르니 백업
-    fw.write(utc.localize(now).astimezone(KST)[:18]+" 이전의 데이터\n")
+    fw.write('['+utc.localize(now).astimezone(KST)[:18]+'] '+staff+"의 기록 이전 데이터\n")
     fw.write(backup+"\n")
     fw.close()
     
@@ -136,7 +144,7 @@ def after_reason(): # 사유 선택 후
             
             printmsg+="> 경고 "+datawarning+"회, 벌점 "+datapenalty+"점\n사유 : "+reason
             logmsg+=datawarning+' '+datapenalty
-            fw2.write(utc.localize(now).astimezone(KST)[:18]+' '+logmsg+"\n")
+            fw2.write('['+utc.localize(now).astimezone(KST)[:18]+'] '+staff+", "+logmsg+"\n")
         fw.write(datastid+' '+datawarning+' '+datapenalty+' '+' '.join(datareason)+"\n")
     fw.close()
     fw2.close()
@@ -155,24 +163,6 @@ def after_reason(): # 사유 선택 후
     }
     return jsonify(res)
 
-@application.route('/colload', methods=['POST'])
-def load_data(): # 경고/벌점 확인
-     
-    req=request.get_json() # 파라미터 값 불러오기
-
-    res={
-        "version": "2.0",
-        "template": {
-            "outputs": [
-                {
-                    "simpleText": {
-                        "text": "아직 "
-                    }
-                }
-            ]
-        }
-    }
-    return jsonify(res)
 '''  
 @application.route('/stid', methods=['POST'])
 def input_stid(): # 학번 입력 함수
