@@ -191,7 +191,7 @@ def after_reason(): # 사유 선택 후
             datareason.append(reason)
             
             printmsg+="> 경고 "+datawarning+"회, 벌점 "+datapenalty+"점\n사유 : "+reason.replace('_',' ')
-            logmsg+=datawarning+' '+datapenalty+' '
+            logmsg+=datawarning+' '+datapenalty+' '+reason
             fw2.write(time+' '+staff+", "+logmsg+"\n")
         fw.write(datastid+' '+datawarning+' '+datapenalty+' '+' '.join(datareason)+"\n")
     fw.close()
