@@ -105,6 +105,7 @@ def after_type(): # 유형 선택 후
 @application.route('/colreason', methods=['POST'])
 def after_reason(): # 사유 선택 후
     
+    now=datetime.datetime.utcnow()
     req=request.get_json() # 파라미터 값 불러오기
     staff=req["action"]["clientExtra"]["staff"] # 생교부원 학번 이름    
     stid=req["action"]["clientExtra"]["stid"] # 부여할 학번
