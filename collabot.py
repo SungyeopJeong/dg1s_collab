@@ -134,6 +134,7 @@ def after_reason(): # 사유 선택 후
         datawarning=data[1]
         datapenalty=data[2]
         datareason=data[3:]
+        print(datastid)
         if stid==datastid:
             printmsg="[부여 완료]\n대상 : "+stid+"\n경고 "+datawarning+"회, 벌점 "+datapenalty+"점\n"
             logmsg=stid+" : "+datawarning+' '+datapenalty+' > '
@@ -164,7 +165,6 @@ def after_reason(): # 사유 선택 후
             ]
         }
     }
-    print(res)
     return jsonify(res)
 
 '''
