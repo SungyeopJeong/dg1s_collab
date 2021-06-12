@@ -182,7 +182,7 @@ def give_wp(staff,stid,typei,reason):
             if datawarning=='3': # 경고 3회면 벌점 1점으로
                 datawarning='0'
                 datapenalty=str(int(datapenalty)+1)
-            datareason.append(time[:11]+reason)
+            datareason.append(time[:10]+reason)
             
             printmsg+="> 경고 "+datawarning+"회, 벌점 "+datapenalty+"점\n사유 : "+reason.replace('_',' ')
             logmsg+=datawarning+' '+datapenalty+' '+reason
