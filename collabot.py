@@ -60,8 +60,8 @@ def after_stid(): # 학번 입력 후
                             "text": "welcome"  
                         }
                     }
-                ],
-                "quickReplies": quickReplies
+                ]#,
+                #"quickReplies": quickReplies
             }
         }
     return jsonify(res)
