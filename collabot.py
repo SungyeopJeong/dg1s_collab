@@ -82,7 +82,14 @@ def after_type(): # 유형 선택 후
     if typei=="경고": msgtxt=["미소등","책상 미정리","의자 미정리","콘센트","기타"]
     elif typei=="벌점": msgtxt=["캐리어","30분 이후 통행","타학생 책상에 두고 미정리"]
     for msg in msgtxt:
-        quickReplies.append({ "action": "block",
+        if msg=="기타":
+            quickReplies.append({ "action": "block",
+                              "label": msg,
+                              "messageText": "사유 : "+msg,
+                              "blockId": "",
+                              "extra": { "staff": staff, "stid": stid, "type": typei, "reason": msg }})
+        else :
+            quickReplies.append({ "action": "block",
                               "label": msg,
                               "messageText": "사유 : "+msg,
                               "blockId": "60c3a77bcb976d4f0ad40ffa",
@@ -160,6 +167,56 @@ def after_reason(): # 사유 선택 후
                 {
                     "simpleText": {
                         "text": printmsg
+                    }
+                }
+            ]
+        }
+    }
+    return jsonify(res)
+
+@application.route('/colask',methods=['POST'])
+def ask_etc_reason():
+    req=request.get_json()
+    print(req["intent"]["id"])
+    res={ # etc_reason OUTPUT context에 etc parameter 추가
+        "version": "2.0",
+        "context": {
+            "values": [
+                {
+                    "name": "etc_reason",
+                    "lifeSpan": 1,
+                    "params": {
+                        "checked": "etc"
+                    }
+                }
+            ]
+        },
+        "template": {
+            "outputs": [
+                {
+                    "simpleText": {
+                        "text": "기타 사유를 입력해주세요."
+                    }
+                }
+            ]
+        }
+    }
+    return jsonify(res)
+
+@application.route('/coletc',methods=['POST'])
+def after_etc_reason():
+    
+    req=request.get_json() # 파라미터 값 불러오기
+    etc_reason=req["userRequest"]["utterance"] # 입력한 내용
+    print(etc_reason)
+    
+    res={
+        "version": "2.0",
+        "template": {
+            "outputs": [
+                {
+                    "simpleText": {
+                        "text": "hi"
                     }
                 }
             ]
