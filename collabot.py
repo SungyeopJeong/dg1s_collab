@@ -91,7 +91,7 @@ def after_type(): # 유형 선택 후
         else :
             msgforprint=msg.replace('_',' ')
             quickReplies.append({ "action": "block",
-                              "label": msg,
+                              "label": msgforprint,
                               "messageText": "사유 : "+msgforprint,
                               "blockId": "60c3a77bcb976d4f0ad40ffa",
                               "extra": { "staff": staff, "stid": stid, "type": typei, "reason": msg }})
