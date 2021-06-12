@@ -49,7 +49,7 @@ def after_stid(): # 학번 입력 후
             quickReplies.append({ "action": "block",
                                   "label": msg[:2],
                                   "messageText": msg,
-                                  "blockId": "",
+                                  "blockId": "60c3a762a0293f369849360a",
                                   "extra": { "stid": stid, "type": msg[:2] }})
         res={
             "version": "2.0",
@@ -70,7 +70,6 @@ def after_stid(): # 학번 입력 후
 def after_type(): # 유형 선택 후
     
     req=request.get_json() # 파라미터 값 불러오기
-    print(req["intent"]["id"])
     stid=req["action"]["clientExtra"]["stid"] # 부여할 학
     typei=req["action"]["clientExtra"]["type"] # 선택한 유형
     print(stid, typei)
