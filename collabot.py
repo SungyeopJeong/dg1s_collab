@@ -118,6 +118,7 @@ def after_reason(): # 사유 선택 후
                                  
     fr=open("/home/ubuntu/dg1s_collab/student_data.txt","r") # student_data 불러와서
     lines=fr.readlines()
+    print(lines)
     backup=fr.read()
     print(backup)
     fr.close()
@@ -216,13 +217,13 @@ def to_excel(): # 엑셀 파일로 생성
     }
     return jsonify(res)
 
-'''
+
 @application.route('/')
 def index():
     return render_template("index.html")
 
 filename=""
-'''
+
 @application.route('/texteditor')
 def text_editor(): # 원하는 파일 사이트에서 보여주고 편집
     global filename
