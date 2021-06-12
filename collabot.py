@@ -130,6 +130,7 @@ def after_reason(): # 사유 선택 후
     fw2=open("/home/ubuntu/dg1s_collab/log.txt","a") # log 기록
     for line in lines:
         data=line.rstrip("\n").split(' ')
+        print(len(data))
         if len(data)<4: continue
         datastid=data[0]
         datawarning=data[1]
