@@ -164,6 +164,7 @@ def after_reason(): # 사유 선택 후
             ]
         }
     }
+    print(res)
     return jsonify(res)
 
 '''
