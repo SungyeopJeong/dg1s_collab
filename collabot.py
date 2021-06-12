@@ -22,7 +22,6 @@ def after_stid(): # 학번 입력 후
     #isstaff=False
     isstaff=True
     print(userid)
-    
     '''fr=open("/home/ubuntu/dg1s_collab/staff_data.txt","r") # staff_data와 비교
     lines=fr.readlines()
     fr.close()
@@ -84,6 +83,13 @@ def after_type(): # 유형 선택 후
     res={
         "version": "2.0",
         "template": {
+            "outputs":[
+                {
+                    "simpleText": {
+                        "text": "사유를 선택해주세요"
+                    }
+                }
+            ],
             "quickReplies": quickReplies
         }
     }
