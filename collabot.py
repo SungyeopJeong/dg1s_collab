@@ -7,7 +7,8 @@ from datetime import timedelta
 from pytz import timezone, utc
 import openpyxl
 import requests
-from bs4 import BeautifulSoup
+#from bs4 import BeautifulSoup
+import random
 
 application=Flask(__name__)
 
@@ -19,8 +20,7 @@ def after_stid(): # 학번 입력 후
     req=request.get_json() # 파라미터 값 불러오기
     userid=req["userRequest"]["user"]["properties"]["plusfriendUserKey"] # 사용자 고유 키
     stid=req["action"]["detailParams"]["student_id"]["value"] # 벌점 부여할 학번
-    #isstaff=False
-    isstaff=True
+    isstaff=False
     staff=""
     
     print(userid,stid)
@@ -146,17 +146,11 @@ def ask_etc_reason():
     }
     return jsonify(res)
 
-@application.route('/colreason', methods=['POST'])
-def after_reason(): # 사유 선택 후
+def give_wp(staff,stid,typei,reason):
     
     now=datetime.datetime.utcnow() # 현재 시간
     time='['+utc.localize(now).astimezone(KST).strftime("%Y-%m-%d %H:%M:%S")+']'
     
-    req=request.get_json() # 파라미터 값 불러오기
-    staff=req["action"]["clientExtra"]["staff"] # 생교부원 학번 이름    
-    stid=req["action"]["clientExtra"]["stid"] # 부여할 학번
-    typei=req["action"]["clientExtra"]["type"] # 선택한 유형
-    reason=req["action"]["clientExtra"]["reason"] # 선택한 사유
     printmsg="" # 출력용 메시지
     logmsg="" # log 기록용 메시지
                                  
@@ -196,6 +190,17 @@ def after_reason(): # 사유 선택 후
         fw.write(datastid+' '+datawarning+' '+datapenalty+' '+' '.join(datareason)+"\n")
     fw.close()
     fw2.close()
+    return printmsg
+
+@application.route('/colreason', methods=['POST'])
+def after_reason(): # 사유 선택 후
+        
+    req=request.get_json() # 파라미터 값 불러오기
+    staff=req["action"]["clientExtra"]["staff"] # 생교부원 학번 이름    
+    stid=req["action"]["clientExtra"]["stid"] # 부여할 학번
+    typei=req["action"]["clientExtra"]["type"] # 선택한 유형
+    reason=req["action"]["clientExtra"]["reason"] # 선택한 사유
+    printmsg=give_wp(staff,stid,typei,reason)
     
     res={
         "version": "2.0",
@@ -219,26 +224,32 @@ def fall_back():
     checked=req["action"]["detailParams"]["checked"]["value"] # "true" > 기타 사유 입력 / "false" > 폴백
     
     if checked=="true":
+        staff=req["action"]["detailParams"]["staff"]["value"] # 생교부원 학번 이름    
+        stid=req["action"]["detailParams"]["stid"]["value"] # 부여할 학번
+        typei=req["action"]["detailParams"]["type"]["value"] # 선택한 유형
+        printmsg=give_wp(staff,stid,typei,utter)
+        
         res={
             "version": "2.0",
             "template": {
                 "outputs": [
                     {
                         "simpleText": {
-                            "text": "hi"
+                            "text": printmsg
                         }
                     }
                 ]
             }
         }
     elif checked=="false":
+        fallbackmsg=["나도 안녕","오랜만이다","ㅎㅇㅎㅇ","아 알지(사실 모름)","나는 시키는 말밖에 못해","미안","고마워","\n\n._________.","ㅋㅋㅋ(일단 웃고 본다)","오(뭔 말이지)"]
         res={
             "version": "2.0",
             "template": {
                 "outputs": [
                     {
                         "simpleText": {
-                            "text": "hi"
+                            "text": random.choice(fallbackmsg)
                         }
                     }
                 ]
