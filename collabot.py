@@ -57,7 +57,6 @@ def after_stid(): # 학번 입력 후
                 "quickReplies": quickReplies
             }
         }
-    return "hi"
 
 @application.route('/coltype', methods=['POST'])
 def after_type(): # 유형 선택 후
