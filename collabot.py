@@ -242,7 +242,21 @@ def fall_back():
             }
         }
     elif checked=="false":
-        fallbackmsg=["나도 안녕","오랜만이다","ㅎㅇㅎㅇ","아 알지(사실 모름)","나는 시키는 말밖에 못해","미안","고마워","\n\n._________.","ㅋㅋㅋ(일단 웃고 본다)","오(뭔 말이지)"]
+        himsg=["나도 안녕","ㅎㅇㅎㅇ","안녕","하이"]
+        laughmsg=["ㅋㅋㅋ","ㅋㅋㅋㅋ","ㅋㅋㅋㅋㅋ","ㅎㅎㅎ"]
+        sorrymsg=["미안","미안해","미안..."]
+        thankmsg=["고마워","고맙다"]
+        randommsg=["아 알지(사실 모름)","나는 시키는 말밖에 못해","\n\n\n.___________.","?","음...?"]
+        if "안녕" in utter or "hi" in utter or "ㅎㅇ" in utter:
+            fallbackmsg=himsg
+        elif "ㅋ" in utter or "ㅎ" in utter:
+            fallbackmsg=laughmsg
+        elif "아니" in utter or "ㅇㄴ" in utter or "답답" in utter:
+            fallbackmsg=sorrymsg
+        elif "귀여" in utter or "귀엽" in utter or "고마워" in utter or "고맙다" in utter:
+            fallbackmsg=thankmsg
+        else :
+            fallbackmsg=randommsg
         res={
             "version": "2.0",
             "template": {
