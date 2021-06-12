@@ -13,7 +13,7 @@ application=Flask(__name__)
 
 KST=timezone('Asia/Seoul')
 
-@application.route('/colstid')#, methods=['POST'])
+@application.route('/colstid', methods=['GET','POST'])
 def after_stid(): # 학번 입력 후
     
     req=request.get_json() # 파라미터 값 불러오기
