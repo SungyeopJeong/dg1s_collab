@@ -163,121 +163,7 @@ def after_reason(): # 사유 선택 후
     }
     return jsonify(res)
 
-'''  
-@application.route('/stid', methods=['POST'])
-def input_stid(): # 학번 입력 함수
-        
-    req=request.get_json() # 파라미터 값 불러오기
-    userid=req["userRequest"]["user"]["properties"]["plusfriendUserKey"]
-    stid=req["action"]["detailParams"]["student_id"]["value"]
-    
-    fr=open("/home/ubuntu/dg1s_bot/user data.txt","r") # userdata 저장 및 변경
-    lines=fr.readlines()
-    fr.close()
-    fw=open("/home/ubuntu/dg1s_bot/user data.txt","w")
-    for line in lines:
-        datas=line.split(" ")
-        dusid=datas[0]
-        if dusid==userid: fw.write(userid+" "+stid+" 7 none 0 none none\n")
-        else : fw.write(line)
-    fw.close()
-    res={
-        "version": "2.0",
-        "template": { "outputs": [ { "simpleText": { "text": "학번이 "+stid+"(으)로 등록되었습니다." } } ] }
-    }
-    return jsonify(res)
-
-@application.route('/save', methods=['POST'])
-def final_save(): # 최종 저장 함수
-        
-    req=request.get_json() # 파라미터 값 불러오기
-    userid=req["userRequest"]["user"]["properties"]["plusfriendUserKey"]
-    
-    fr=open("/home/ubuntu/dg1s_bot/user data.txt","r") # 좌석 저장 후 초기화
-    lines=fr.readlines()
-    fr.close()
-    rw=open("/home/ubuntu/dg1s_bot/user data.txt","w")
-    fw=open("/home/ubuntu/dg1s_bot/final save.txt","a")
-    for line in lines:
-        datas=line.split(" ")
-        dusid=datas[0]; dstid=datas[1]; dday=datas[2]; dmeal=datas[3]
-        dseat=datas[4]; dp1=datas[5]; dp2=datas[6].rstrip('\n')
-        if dusid==userid:
-            if dmeal=="아침": dmeal='0'
-            elif dmeal=="점심": dmeal='1'
-            elif dmeal=="저녁": dmeal='2'
-            fw.write(dstid+" "+dday+" "+dmeal+" "+dseat+" -\n")
-            if dp1!="none": fw.write(dp1+" "+dday+" "+dmeal+" "+dseat+" *\n")
-            if dp2!="none": fw.write(dp2+" "+dday+" "+dmeal+" "+dseat+" *\n")
-            rw.write(userid+" "+dstid+" 7 none 0 none none\n")
-        else : rw.write(line) 
-    rw.close()
-    fw.close()
-    
-    res={
-        "version": "2.0",
-        "template": { "outputs": [ { "simpleText": { "text": "저장되었습니다." } } ] }
-    }
-    return jsonify(res)
-
-@application.route('/reset', methods=['POST'])
-def reset(): # 초기화
-    
-    now=datetime.datetime.utcnow() # Meal 계산
-    Day=int(utc.localize(now).astimezone(KST).strftime("%w"))
-    hour=int(utc.localize(now).astimezone(KST).strftime("%H"))
-    minu=int(utc.localize(now).astimezone(KST).strftime("%M"))
-    if (hour==6 and minu>=50) or (hour>=7 and hour<12) or (hour==12 and minu<30): Meal="아침" # 가장 최근 식사가 언제인지 자동 계산
-    elif (hour==12 and minu>=30) or (hour>=13 and hour<18) or (hour==18 and minu<30): Meal="점심"
-    else: 
-        Meal="저녁"
-        if (hour==6 and minu<50) or hour<=5 : Day=(Day+6)%7
-    
-    req=request.get_json() # 파라미터 값 불러오기
-    userid=req["userRequest"]["user"]["properties"]["plusfriendUserKey"]
-    stid="none"
-    
-    fr=open("/home/ubuntu/dg1s_bot/user data.txt","r") # 초기화
-    lines=fr.readlines()
-    fr.close()
-    fw=open("/home/ubuntu/dg1s_bot/user data.txt","w")
-    for line in lines:
-        datas=line.split(" ")
-        dusid=datas[0];
-        if dusid==userid: stid=datas[1]
-        if dusid!=userid: fw.write(line)
-    fw.write(userid+" "+stid+" 7 none 0 none none\n")
-    fw.close()
-    
-    res={
-        "version": "2.0",
-        "template": {
-            "outputs": [
-                {
-                    "carousel": {
-                        "type": "basicCard",
-                        "items": [
-                            {
-                                "title": "[저장 확인]",
-                                "description": "학번    "+stid+"\n날짜    "+Days[Day]+"\n식사    "+Meal+"\n좌석    0",
-                                "buttons": [
-                                    { "action": "message", "label": "확인", "messageText": "확인했습니다." },
-                                    { "action": "message", "label": "초기화", "messageText": "초기화" }
-                                ]
-                            },
-                            { 
-                                "thumbnail":{
-                                    "imageUrl": "http://k.kakaocdn.net/dn/L689z/btqJ78BkcF5/oG7PgVEcPhCqma4ZwyvwAk/img_l.jpg", "fixedRatio": "true"
-                                }
-                            }
-                        ]
-                    }
-                }
-            ]
-        }
-    }
-    return jsonify(res)
-
+'''
 @application.route('/excel', methods=['POST'])
 def to_excel(): # 엑셀 파일로 생성
     
@@ -324,32 +210,6 @@ def to_excel(): # 엑셀 파일로 생성
     }
     return jsonify(res)
 
-@application.route('/upst', methods=['POST'])
-def update_stid(): # 학번 갱신 함수
-    
-    updatestr=""
-    # 형식: "이전 학번_새 학번_..." ex) "1301 2106 1316 2417" 
-    
-    fr=open("/home/ubuntu/dg1s_bot/user data.txt","r")
-    lines=fr.readlines()
-    fr.close()
-    fw=open("/home/ubuntu/dg1s_bot/user data.txt","w")
-    for line in lines:
-        former_stid=line.split(" ")[1]
-        i=updatestr.find(former_stid)
-        if i!=-1: 
-            new_stid=updatestr[i+5:i+9]
-            line=line.replace(former_stid,new_stid)
-        fw.write(line)
-    fw.close()
-    
-    res={
-        "version": "2.0",
-        "template": {
-            "outputs": [ { "simpleText": { "text": "학번 갱신 완료" } } ]
-        }
-    }
-    return jsonify(res)
 '''
 @application.route('/')
 def index():
@@ -414,7 +274,7 @@ def upload_n_download():
     for folder in folders:
         files.remove(folder)
     return render_template("file.html", files=files)
-'''
+
 @application.route('/status')
 def record_status():
     index=int(request.args.get('index'))
@@ -452,6 +312,6 @@ def record_status():
         record[i][13]=str(round((record[i][13]/mealN)*100))+'%'
     
     return render_template("status.html", n=n, stid=stid, name=name, record=record)
-
+'''
 if __name__ == "__main__":
     application.run(host='0.0.0.0', port=5000)
