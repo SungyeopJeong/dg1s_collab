@@ -87,7 +87,7 @@ def after_type(): # 유형 선택 후
                               "label": msg,
                               "messageText": "사유 : "+msg,
                               "blockId": "60c4a96bc13fe4037f226823",
-                              "extra": { "staff": staff, "stid": stid, "type": typei, "reason": msg }})
+                              "extra": { "staff": staff, "stid": stid, "type": typei }})
         else :
             quickReplies.append({ "action": "block",
                               "label": msg,
@@ -112,6 +112,11 @@ def after_type(): # 유형 선택 후
 @application.route('/colask',methods=['POST'])
 def ask_etc_reason():
 
+    req=request.get_json() # 파라미터 값 불러오기
+    staff=req["action"]["clientExtra"]["staff"] # 생교부원 학번 이름    
+    stid=req["action"]["clientExtra"]["stid"] # 부여할 학번
+    typei=req["action"]["clientExtra"]["type"] # 선택한 유형
+    
     res={ # etc_reason OUTPUT context에 parameter 추가
         "version": "2.0",
         "context": {
@@ -120,7 +125,10 @@ def ask_etc_reason():
                     "name": "etc_reason",
                     "lifeSpan": 1,
                     "params": {
-                        "checked": "true"
+                        "checked": "true",
+                        "staff": staff,
+                        "stid": stid,
+                        "type": typei
                     }
                 }
             ]
@@ -202,26 +210,39 @@ def after_reason(): # 사유 선택 후
     }
     return jsonify(res)
 
-@application.route('/coletc',methods=['POST'])
-def after_etc_reason():
+@application.route('/colfall',methods=['POST'])
+def fall_back():
     
     req=request.get_json() # 파라미터 값 불러오기
-    etc_reason=req["userRequest"]["utterance"] # 입력한 내용
-    checked=req["action"]["detailParams"]["checked"]["value"]
-    print(etc_reason,checked)
+    utter=req["userRequest"]["utterance"] # 입력한 내용
+    checked=req["action"]["detailParams"]["checked"]["value"] # "true" > 기타 사유 입력 / "false" > 폴백
     
-    res={
-        "version": "2.0",
-        "template": {
-            "outputs": [
-                {
-                    "simpleText": {
-                        "text": "hi"
+    if checked=="true":
+        res={
+            "version": "2.0",
+            "template": {
+                "outputs": [
+                    {
+                        "simpleText": {
+                            "text": "hi"
+                        }
                     }
-                }
-            ]
+                ]
+            }
         }
-    }
+    elif checked=="false":
+        res={
+            "version": "2.0",
+            "template": {
+                "outputs": [
+                    {
+                        "simpleText": {
+                            "text": "hi"
+                        }
+                    }
+                ]
+            }
+        }
     return jsonify(res)
 
 '''
