@@ -17,11 +17,11 @@ KST=timezone('Asia/Seoul')
 def after_stid(): # 학번 입력 후
     
     req=request.get_json() # 파라미터 값 불러오기
-    userid=req["userRequest"]["user"]["properties"]["plusfriendUserKey"] # 사용자 고유 키
-    stid=req["action"]["detailParams"]["student_id"]["value"] # 벌점 부여할 학번
+    #userid=req["userRequest"]["user"]["properties"]["plusfriendUserKey"] # 사용자 고유 키
+    #stid=req["action"]["detailParams"]["student_id"]["value"] # 벌점 부여할 학번
     #isstaff=False
     isstaff=True
-    print(userid)
+    #print(userid)
     
     '''fr=open("/home/ubuntu/dg1s_collab/staff_data.txt","r") # staff_data와 비교
     lines=fr.readlines()
@@ -43,7 +43,7 @@ def after_stid(): # 학번 입력 후
             }
         }
     else:
-        quickReplies=[] # 경고/벌점을 바로가기 응답 형태로 제공
+        '''quickReplies=[] # 경고/벌점을 바로가기 응답 형태로 제공
         msgtxt=["경고 1회 추가","벌점 1점 추가"]
         for msg in msgtxt:
             quickReplies.append({ "action": "block",
@@ -56,9 +56,8 @@ def after_stid(): # 학번 입력 후
             "template": {
                 "quickReplies": quickReplies
             }
-        }
-        return jsonify(res)
-        print("what")
+        }'''
+        return "wtf"
 
 @application.route('/coltype', methods=['POST'])
 def after_type(): # 유형 선택 후
