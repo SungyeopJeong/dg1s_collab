@@ -119,6 +119,7 @@ def after_reason(): # 사유 선택 후
     fr=open("/home/ubuntu/dg1s_collab/student_data.txt","r") # student_data 불러와서
     backup=fr.read()
     lines=fr.readlines()
+    print(lines)
     fr.close()
     
     fw=open("/home/ubuntu/dg1s_collab/backup.txt","a") # 혹시 모르니 백업
