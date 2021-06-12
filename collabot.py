@@ -20,7 +20,7 @@ def after_stid(): # 학번 입력 후
     userid=req["userRequest"]["user"]["properties"]["plusfriendUserKey"] # 사용자 고유 키
     stid=req["action"]["detailParams"]["student_id"]["value"] # 벌점 부여할 학번
     #isstaff=False
-    isstaff=True
+    isstaff=False
     print(userid)
     
     '''fr=open("/home/ubuntu/dg1s_collab/staff_data.txt","r") # staff_data와 비교
