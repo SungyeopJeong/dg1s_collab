@@ -117,9 +117,9 @@ def after_reason(): # 사유 선택 후
     logmsg="" # log 기록용 메시지
                                  
     fr=open("/home/ubuntu/dg1s_collab/student_data.txt","r") # student_data 불러와서
-    backup=fr.read()
     lines=fr.readlines()
-    print(lines)
+    backup=fr.read()
+    print(backup)
     fr.close()
     
     fw=open("/home/ubuntu/dg1s_collab/backup.txt","a") # 혹시 모르니 백업
