@@ -128,14 +128,13 @@ def after_reason(): # 사유 선택 후
     
     fw=open("/home/ubuntu/dg1s_collab/student_data.txt","w") # student_data 수정
     fw2=open("/home/ubuntu/dg1s_collab/log.txt","a") # log 기록
-    print(lines)
     for line in lines:
         data=line.rstrip("\n").split(' ')
+        if len(data)<4: continue
         datastid=data[0]
         datawarning=data[1]
         datapenalty=data[2]
         datareason=data[3:]
-        print(datastid)
         if stid==datastid:
             printmsg="[부여 완료]\n대상 : "+stid+"\n경고 "+datawarning+"회, 벌점 "+datapenalty+"점\n"
             logmsg=stid+" : "+datawarning+' '+datapenalty+' > '
