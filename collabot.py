@@ -20,7 +20,7 @@ def after_stid(): # 학번 입력 후
     userid=req["userRequest"]["user"]["properties"]["plusfriendUserKey"] # 사용자 고유 키
     stid=req["action"]["detailParams"]["student_id"]["value"] # 벌점 부여할 학번
     #isstaff=False
-    isstaff=False
+    isstaff=True
     print(userid)
     
     '''fr=open("/home/ubuntu/dg1s_collab/staff_data.txt","r") # staff_data와 비교
@@ -29,7 +29,6 @@ def after_stid(): # 학번 입력 후
     for line in lines:
         if userid==line.rstrip("\n") : isstaff=True'''
     if isstaff==False: # 생교부원이 아니다
-        print("where2")
         res={
             "version": "2.0",
             "template": {
@@ -54,6 +53,13 @@ def after_stid(): # 학번 입력 후
         res={
             "version": "2.0",
             "template": {
+                "outputs":[
+                    {
+                        "simpleText": {
+                            "text": "경고/벌점을 선택해주세요"
+                        }
+                    }
+                ],
                 "quickReplies": quickReplies
             }
         }
