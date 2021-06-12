@@ -21,7 +21,7 @@ def after_stid(): # 학번 입력 후
     stid=req["action"]["detailParams"]["student_id"]["value"] # 벌점 부여할 학번
     #isstaff=False
     isstaff=True
-    print(userid,stid)
+    print(userid)
     
     '''fr=open("/home/ubuntu/dg1s_collab/staff_data.txt","r") # staff_data와 비교
     lines=fr.readlines()
@@ -65,6 +65,7 @@ def after_stid(): # 학번 입력 후
             }
         }
     return jsonify(res)
+    print(res)
 
 @application.route('/coltype', methods=['POST'])
 def after_type(): # 유형 선택 후
