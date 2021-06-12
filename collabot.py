@@ -89,9 +89,10 @@ def after_type(): # 유형 선택 후
                               "blockId": "60c4a96bc13fe4037f226823",
                               "extra": { "staff": staff, "stid": stid, "type": typei }})
         else :
+            msgforprint=msg.replace('_',' ')
             quickReplies.append({ "action": "block",
                               "label": msg,
-                              "messageText": "사유 : "+msg,
+                              "messageText": "사유 : "+msgforprint,
                               "blockId": "60c3a77bcb976d4f0ad40ffa",
                               "extra": { "staff": staff, "stid": stid, "type": typei, "reason": msg }})
     res={
@@ -189,8 +190,8 @@ def after_reason(): # 사유 선택 후
                 datapenalty=str(int(datapenalty)+1)
             datareason.append(reason)
             
-            printmsg+="> 경고 "+datawarning+"회, 벌점 "+datapenalty+"점\n사유 : "+reason
-            logmsg+=datawarning+' '+datapenalty+' '+reason
+            printmsg+="> 경고 "+datawarning+"회, 벌점 "+datapenalty+"점\n사유 : "+reason.replace('_',' ')
+            logmsg+=datawarning+' '+datapenalty+' '
             fw2.write(time+' '+staff+", "+logmsg+"\n")
         fw.write(datastid+' '+datawarning+' '+datapenalty+' '+' '.join(datareason)+"\n")
     fw.close()
