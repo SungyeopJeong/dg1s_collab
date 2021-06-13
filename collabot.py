@@ -277,6 +277,8 @@ def show_stdata():
     
     return data
 
+if __name__ == "__main__":
+    application.run(host='0.0.0.0', port=5000)
 '''
 @application.route('/excel', methods=['POST'])
 def to_excel(): # 엑셀 파일로 생성
@@ -427,5 +429,3 @@ def record_status():
     
     return render_template("status.html", n=n, stid=stid, name=name, record=record)
 '''
-if __name__ == "__main__":
-    application.run(host='0.0.0.0', port=5000)
