@@ -91,11 +91,13 @@
             padding: 1.5vh;
             box-sizing: border-box;
         }
+        #setbox > div {
+            float: right;
+        }
         #grade {
             width: 5vw;
             height: 3vh;
             margin: 0 1vh 0 1vh;
-            float: right;
             display: inline-block;
             background-color: #D9D9D9;
             border-radius: 1.5vh;
@@ -144,7 +146,6 @@
             width: 3vw;
             height: 3vh;
             margin: 0 1vh 0 1vh;
-            float: right;
             display: inline-block;
             background-color: #D9D9D9;
             border-radius: 1.5vh;
@@ -197,6 +198,10 @@
         #dnldbtn:hover {
             cursor: pointer;
         }
+        .legend {
+            height: 3vh;
+            margin: 0 0 0 1vh;
+        }
         #graph {
             width: 80vw;
             height: 49vh;
@@ -230,10 +235,12 @@
             width: 1vh;
             height: 1vh;
             display: inline-block;
+            border-radius: 0.5vh;
+        }
+        .warningbox .warning, .penaltybox .penalty {
             position: relative;
             top: 100%;
             z-index: -1;
-            border-radius: 0.5vh;
         }
         .warning {
             background-color: #FFE07D;
@@ -335,6 +342,14 @@
                         </ul>
                     </div>
                 </div>
+                <div class="legend">
+                    <span class="penalty"></span>
+                    <span style="line-height: 3vh; font-size: 12px;">벌점</span>
+                </div>
+                <div class="legend">
+                    <span class="warning"></span>
+                    <span style="line-height: 3vh; font-size: 12px;">경고</span>
+                </div>                
             </div>
             <div id="graph">
                 {% for i in range(21) %}
