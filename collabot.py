@@ -287,14 +287,13 @@ def main():
     fr=open("/home/ubuntu/dg1s_collab/student_data.txt","r")
     lines=fr.readlines()
     fr.close()
-    print(lines)
-    for i in range(1,22):
-        if i<10: stid.append(gc+'0'+str(i))
-        else : stid.append(gc+str(i))
+
+    for i in range(21):
+        if i<9: stid.append(gc+'0'+str(i+1))
+        else : stid.append(gc+str(i+1))
         index=(int(gc[0])-1)*4+int(gc[1])-1
-        print(index)
-        height.append(lines[index].split(' ')[1])
-        height.append(lines[index].split(' ')[2])
+        height.append(lines[index*21+i].split(' ')[1])
+        height.append(lines[index*21+i].split(' ')[2])
     
     return render_template("main.html",stid=stid,height=height)
 
