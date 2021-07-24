@@ -292,8 +292,8 @@ def main():
         if i<10: stid.append(gc+'0'+str(i))
         else : stid.append(gc+str(i))
         index=(int(gc[0])-1)*4+int(gc[1])-1
-        height.append(lines[index].split' ')[1])
-        height.append(lines[index].split' ')[2])
+        height.append(lines[index].split(' ')[1])
+        height.append(lines[index].split(' ')[2])
     
     return render_template("main.html",stid=stid,height=height)
 
