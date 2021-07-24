@@ -325,12 +325,12 @@ def to_excel(): # 엑셀 파일로 생성
         }
     }
     return jsonify(res)
-
+'''
 
 @application.route('/')
-def index():
-    return render_template("index.html")
-
+def main():
+    return render_template("main.html")
+'''
 filename=""
 
 @application.route('/texteditor')
