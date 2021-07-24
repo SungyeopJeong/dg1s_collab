@@ -302,7 +302,7 @@ def main():
         warning=line[1]
         penalty=line[2]
         reasons=line[3:]
-        print('"'+reasons+'"')
+        print(reasons)
         title="경고 "+warning+"회, 벌점 "+penalty+"점"
         if len(reasons)!=1:
             reasonmsg=""
