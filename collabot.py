@@ -277,6 +277,10 @@ def show_stdata():
     
     return data
 
+@application.route('/')
+def main():
+    return render_template("main.html")
+
 if __name__ == "__main__":
     application.run(host='0.0.0.0', port=5000)
 '''
@@ -325,12 +329,7 @@ def to_excel(): # 엑셀 파일로 생성
         }
     }
     return jsonify(res)
-'''
 
-@application.route('/')
-def main():
-    return render_template("main.html")
-'''
 filename=""
 
 @application.route('/texteditor')
