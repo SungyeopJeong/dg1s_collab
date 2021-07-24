@@ -225,6 +225,17 @@
             background-color: #FFC000;
             margin: 0 1.08vw 0 0.07vw;
         }
+        .detail {
+            width: 2vw;
+            display: inline-block;
+            position: relative;
+            left: 100%;
+            background-color: white;
+            visibility: hidden;
+        }
+        .detail:hover {
+            visibility: visible;
+        }
         #stid {
             width: 80vw;
             padding: 0 3.25vw 0 3.25vw;
@@ -323,8 +334,12 @@
             <div id="graph">
                 {% for i in range(21) %}
                     <div>
-                        <span class="warning" style="height: {{height[i*2]}}vh" title="경고 {{height[i*2]}}점"></span>
-                        <span class="penalty" style="height: {{height[i*2+1]}}vh" title="벌점 {{height[i*2+1]}}점"></span>
+                        <span class="warning" style="height: {{height[i*2]}}vh">
+                            <span class="detail">경고 {{height[i*2]}}점</span>
+                        </span>
+                        <span class="penalty" style="height: {{height[i*2+1]}}vh">
+                            <span class="detail">벌점 {{height[i*2+1]}}점</span>
+                        </span>
                     </div>
                 {% endfor %}
             </div>
