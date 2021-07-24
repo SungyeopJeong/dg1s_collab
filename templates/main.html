@@ -336,12 +336,12 @@
                     <div>
                         <div class="warningbox">
                             {% for j in range(height[i*2]|int) %}
-                                <span class="warning" style="transform: translateY(-{{(j+1)*100}}%)"></span>
+                                <span class="warning" style="transform: translateY(-{{(j*2+1)*100}}%)"></span>
                             {% endfor %}
                         </div>
                         <div class="penaltybox">
                             {% for j in range(height[i*2+1]|int) %}
-                                <span class="penalty" style="transform: translateY(-{{(j+1)*100}}%)"></span>
+                                <span class="penalty" style="transform: translateY(-{{(j*2+1)*100}}%)"></span>
                             {% endfor %}
                         </div>
                     </div>
