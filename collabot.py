@@ -80,7 +80,7 @@ def after_type(): # 유형 선택 후
                                  
     quickReplies=[] # 사유를 바로가기 응답 형태로 제공
     if typei=="경고": msgtxt=["미소등","책상_미정리","의자_미정리","콘센트","기타"]
-    elif typei=="벌점": msgtxt=["캐리어","30분_이후 통행","타학생_책상에_두고_미정리"]
+    elif typei=="벌점": msgtxt=["캐리어","30분_이후_통행","타학생_책상에_두고_미정리"]
     for msg in msgtxt:
         if msg=="기타":
             quickReplies.append({ "action": "block",
