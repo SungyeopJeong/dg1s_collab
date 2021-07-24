@@ -303,12 +303,11 @@ def main():
         penalty=line[2]
         reasons=line[3:]
         title="경고 "+warning+"회, 벌점 "+penalty+"점"
-        if len(reasons)!=1:
-            reasonmsg=""
-            for reason in reasons:
-                if reason=="none": continue
-                reasonmsg+="\n"+reason.replace('_',' ')[:10]+' '+reason.replace('_',' ')[10:]
-            title+="\n사유 :"+reasonmsg
+        reasonmsg=""
+        for reason in reasons:
+            if reason=="none" or reason=="": continue
+            reasonmsg+="\n"+reason.replace('_',' ')[:10]+' '+reason.replace('_',' ')[10:]
+        if reasonmsg!="": title+="\n사유 :"+reasonmsg
         titles.append(title)
     
     return render_template("main.html",stid=stid,height=height,titles=titles)
