@@ -204,22 +204,27 @@
             box-sizing: border-box;
             display: flex;
         }
-        #graph div {
+        .barbox {
             width: 3.5vw;
             height: 49vh;
-            display: flex;
+            text-align: center;
+        }
+        .bar {
+            width: 2.2vh;
+            height: 49vh;
+            display: inline-block;
         }
         .warningbox, .penaltybox {
-            width: 1vw;
+            width: 1vh;
             height: 49vh;
             display: flex;
             flex-direction: column;
         }
         .warningbox {
-            margin: 0 0.05vw 0 0.7vw;
+            float: left;
         }
         .penaltybox {
-            margin: 0 0.7vw 0 0.05vw;
+            float: right;
         }
         .warning, .penalty {
             width: 1vh;
@@ -333,16 +338,18 @@
             </div>
             <div id="graph">
                 {% for i in range(21) %}
-                    <div>
-                        <div class="warningbox">
-                            {% for j in range(height[i*2]|int) %}
-                                <span class="warning" style="transform: translateY(-{{(j*2+1)*100}}%)"></span>
-                            {% endfor %}
-                        </div>
-                        <div class="penaltybox">
-                            {% for j in range(height[i*2+1]|int) %}
-                                <span class="penalty" style="transform: translateY(-{{(j*2+1)*100}}%)"></span>
-                            {% endfor %}
+                    <div class="barbox">
+                        <div class="bar">
+                            <div class="warningbox">
+                                {% for j in range(height[i*2]|int) %}
+                                    <span class="warning" style="transform: translateY(-{{(j*2+1)*100}}%)"></span>
+                                {% endfor %}
+                            </div>
+                            <div class="penaltybox">
+                                {% for j in range(height[i*2+1]|int) %}
+                                    <span class="penalty" style="transform: translateY(-{{(j*2+1)*100}}%)"></span>
+                                {% endfor %}
+                            </div>
                         </div>
                     </div>
                 {% endfor %}
