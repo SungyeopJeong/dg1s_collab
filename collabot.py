@@ -336,7 +336,7 @@ def to_excel(): # 엑셀 파일로 생성
             col+=1
     
     wb.save("경고 및 벌점 표.xlsx")
-    return send_file("/home/ubuntu/dg1s_collab/경고 및 벌점 표.xlsx", attachment_filename="경고 및 벌점 표.xlsx", as_attachment=True)
+    return send_file("/home/ubuntu/dg1s_collab/경고 및 벌점 표.xlsx", download_name="경고 및 벌점 표.xlsx", as_attachment=True)
 
 if __name__ == "__main__":
     application.run(host='0.0.0.0', port=5000)
