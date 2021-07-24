@@ -281,7 +281,7 @@ def show_stdata():
 def main():
     
     gc=request.args.get('gc')
-    if gc not in ["11","12","13","14","21","22","23","24"]: gc="11"
+    if gc not in ["11","12","13","14","21","22","23","24","31","32","33","34"]: gc="11"
     stid=[]
     height=[]
     
