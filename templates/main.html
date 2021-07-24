@@ -264,6 +264,7 @@
             document.getElementById("gradename").innerText = gradeN;
             document.getElementById("gradelistbox").style.visibility = "hidden";
             gradelist = 0;
+            location.replace('http://13.125.231.95:5000/?gc='+gradeN[0]+{{stid[0][1]|tojson}});
         }
         function clickclass() {
             if (classlist == 0) document.getElementById("classlistbox").style.visibility = "visible";
@@ -274,6 +275,7 @@
             document.getElementById("classname").innerText = classN;
             document.getElementById("classlistbox").style.visibility = "hidden";
             classlist = 0;
+            location.replace('http://13.125.231.95:5000/?gc='+{{stid[0][0]|tojson}}+classN[0]);
         }
     </script>
 </head>
@@ -296,7 +298,7 @@
             <div id="setbox">
                 <img id="dnldbtn" src="./static/images/dnldbtn.png" />
                 <div id="class">
-                    <span id="classname" onclick="clickclass()">4반</span>
+                    <span id="classname" onclick="clickclass()">{{stid[0][1]}}반</span>
                     <div id="classlistbox">
                         <ul id="classlist">
                             <li class="classli" onclick="selectclass('1반');">1반</li>
@@ -307,7 +309,7 @@
                     </div>
                 </div>
                 <div id="grade">
-                    <span id="gradename" onclick="clickgrade()">2학년</span>
+                    <span id="gradename" onclick="clickgrade()">{{stid[0][0]}}학년</span>
                     <div id="gradelistbox">
                         <ul id="gradelist">
                             <li class="gradeli" onclick="selectgrade('1학년');">1학년</li>
