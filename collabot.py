@@ -315,7 +315,7 @@ def main():
 @application.route('/excel')
 def to_excel(): # 엑셀 파일로 생성
     
-    wb = openpyxl.load_workbook('경고 및 벌점 표.xlsx',data_only=True) # 엑셀 기본 형식
+    wb = openpyxl.load_workbook('form.xlsx',data_only=True) # 엑셀 기본 형식
     
     fr=open("/home/ubuntu/dg1s_collab/student_data.txt","r") # 엑셀 채워 넣기
     lines=fr.readlines()
@@ -324,55 +324,19 @@ def to_excel(): # 엑셀 파일로 생성
         data=line.rstrip('\n').split(' ')
         if len(data)<4: continue
         datastid=data[0]
-        datawarning=data[1]
-        datapenalty=data[2]
         datareason=data[3:]
-        if stid==datastid:
-            printmsg="[경고/벌점 현황]\n학번 : "+stid+"\n경고 "+datawarning+"회, 벌점 "+datapenalty+"점"
-            if len(datareason)!=1:
-                reasons=""
-                for reason in datareason:
-                    if reason=="none": continue
-                    reasons+="\n"+reason.replace('_',' ')[:10]+' '+reason.replace('_',' ')[10:]
-                printmsg+="\n사유 :"+reasons
+        row=int(datastid[2:])+2
+        sheet=wb[datastid[0]+'-'+datastid[1]]
+        sheet.cell(row,3).value=data[1]
+        sheet.cell(row,4).value=data[2]
+        col=5
+        for reason in datareason:
+            if reason=="none" or reason=="": continue
+            sheet.cell(row,col)
+            col+=1
     
-    for line in lines:
-        if line==lines[0]: continue
-        if "none" in line: continue
-        datas=line.split(" ")
-        if len(datas)!=5: continue
-        dstid=datas[0]; dday=int(datas[1]); dmeal=int(datas[2]); dseat=datas[3]
-        col=dday*3+dmeal; row=int(dstid[2:])+3 
-        if dseat==".": dseat="X"
-        if 4<=col and col<=16:
-            sheet=wb[dstid[:2]]
-            sheet.cell(row,col).value=dseat
-    
-    sh = wb['통계']
-    j = 0
-    for sheet in wb:
-        if sheet.title not in classn: continue
-        T = sheet.title; N = str(classN[j]+3)
-        # 통계 칸 채우기
-        sh.cell(2,6).value = int(lines[0].rstrip('\n'))
-        sh.cell(j+2,5).value = int(N)-3
-        sh.cell(j+2,4).value = "=COUNTA("+T+"!D4:P"+N+")/('통계'!$F$2*("+N+"-3))"
-        sh.cell(j+2,4).number_format = "0.00%"
-        for k in range(4,4+classN[j]):
-            # 참여율 칸 채우기
-            K = str(k)
-            sheet.cell(k,17).value = "=COUNTA(D"+K+":P"+K+")/'통계'!$F$2"
-            sheet.cell(k,17).number_format = "0%"
-        j += 1
-    
-    wb.save("bob.xlsx")
-    res={
-        "version": "2.0",
-        "template": {
-            "outputs": [ { "simpleText": { "text": "Excel 파일 생성 완료" } } ]
-        }
-    }
-    return jsonify(res)
+    wb.save("경고 및 벌점 표.xlsx")
+    return send_file("/home/ubuntu/dg1s_collab/경고 및 벌점 표.xlsx", attachment_filename="경고 및 벌점 표.xlsx", as_attachment=True)
 
 if __name__ == "__main__":
     application.run(host='0.0.0.0', port=5000)
