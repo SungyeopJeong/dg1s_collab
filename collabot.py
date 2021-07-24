@@ -287,8 +287,8 @@ def main():
     for i in range(1,22):
         if i<10: stid.append(gc+'0'+str(i))
         else : stid.append(gc+str(i))
-        height.append(1)
-        height.append(15)
+        height.append("height: 1vh")
+        height.append("height: 15vh")
     
     return render_template("main.html",stid=stid,height=height)
 
