@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>난 잘못한 거 없는데</title>
+    <link rel="shortcut icon" href="./favicon.ico">
+    <link href="https://fonts.google.com/specimen/Noto+Sans+KR#standard-styles" rel="stylesheet" type="text/css" />
+    <style>
+        body {
+            width: 100vw;
+            height: 100vh;
+            margin: 0;
+        }
+        span {
+            font-family: 'Noto Sans KR';
+        }
+        #header {
+            width: 100vw;
+            height: 10vh;
+            display: flex;
+        }
+        #imgbox {
+            width: 50vw;
+            height: 10vh;
+            text-align: center;
+        }
+        #logoimg {
+            max-width: 40vw;
+            max-height: 6vh;
+            position: relative;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        #pwdbox {
+            width: 50vw;
+            height: 10vh;
+            display: flex;
+        }
+        input {
+            width: 10vw;
+            height: 4vh;
+            margin: 0 1vw 0 19vw;
+            box-sizing: border-box;
+            padding: 10px;
+            position: relative;
+            top: 50%;
+            transform: translateY(-50%);
+            border: 2px solid #0075E8;
+            border-radius: 2vh;
+            font-family: 'Noto Sans KR';
+            font-size: 10px;
+            color: #0075E8;
+        }
+        input::placeholder {
+            color: #65BEFF;
+        }
+        input:focus {
+            outline: none;
+        }
+        #btnbox {
+            width: 20vw;
+            height: 10vh;
+        }
+        #loginbtn {
+            height: 4vh;
+            position: relative;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        #loginbtn:hover {
+            cursor: pointer;
+        }
+        #bgbox {
+            width: 100vw;
+            height: 75vh;
+            background-color: #0075E8;
+        }
+        #graphbox {
+            width: 80vw;
+            height: 60vh;
+            margin: 0 10vw 0 10vw;
+            background-color: white;
+            border-radius: 2vh;
+            position: relative;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        #setbox {
+            width: 80vw;
+            height: 6vh;
+            padding: 1.5vh;
+            box-sizing: border-box;
+        }
+        #grade {
+            width: 5vw;
+            height: 3vh;
+            margin: 0 1vh 0 1vh;
+            float: right;
+            display: inline-block;
+            background-color: #D9D9D9;
+            border-radius: 1.5vh;
+        }
+        #grade:hover {
+            cursor: pointer;
+        }
+        #gradename {
+            width: 5vw;
+            display: inline-block;
+            font-size: 15px;
+            text-align: center;
+            line-height: 3vh;
+        }
+        #gradelistbox {
+            width: 5vw;
+            height: 9vh;
+            padding: 0 0 0 0;
+            box-sizing: border-box;
+            visibility: hidden;
+            position: relative;
+            top: 0;
+            background-color: #F2F2F2;
+        }
+        #gradelist {
+            width: 5vw;
+            height: 9vh;
+            margin: 0;
+            padding: 0 0 0 0;
+            box-sizing: border-box;
+            list-style: none;
+        }
+        .gradeli {
+            width: 5vw;
+            font-family: 'Noto Sans KR';
+            font-size: 15px;
+            text-align: center;
+            line-height: 3vh;
+            text-decoration: none;
+        }
+        .gradeli:hover {
+            cursor: pointer;
+            background-color: #E6E6E6;
+        }
+        #class {
+            width: 3vw;
+            height: 3vh;
+            margin: 0 1vh 0 1vh;
+            float: right;
+            display: inline-block;
+            background-color: #D9D9D9;
+            border-radius: 1.5vh;
+        }
+        #class:hover {
+            cursor: pointer;
+        }
+        #classname {
+            width: 3vw;
+            display: inline-block;
+            font-size: 15px;
+            text-align: center;
+            line-height: 3vh;
+        }
+        #classlistbox {
+            width: 3vw;
+            height: 12vh;
+            padding: 0 0 0 0;
+            box-sizing: border-box;
+            visibility: hidden;
+            position: relative;
+            top: 0;
+            background-color: #F2F2F2;
+        }
+        #classlist {
+            width: 3vw;
+            height: 12vh;
+            margin: 0;
+            padding: 0 0 0 0;
+            box-sizing: border-box;
+            list-style: none;
+        }
+        .classli {
+            width: 3vw;
+            font-family: 'Noto Sans KR';
+            font-size: 15px;
+            text-align: center;
+            line-height: 3vh;
+            text-decoration: none;
+        }
+        .classli:hover {
+            cursor: pointer;
+            background-color: #E6E6E6;
+        }
+        #dnldbtn {
+            height: 3vh;
+            margin: 0 0 0 1vh;
+            float: right;
+        }
+        #dnldbtn:hover {
+            cursor: pointer;
+        }
+        #graph {
+            width: 80vw;
+            height: 49vh;
+            padding: 0 3.25vw 0 3.25vw;
+            box-sizing: border-box;
+            display: flex;
+        }
+        #graph div {
+            width: 3.5vw;
+            height: 49vh;
+            display: flex;
+        }
+        #graph div span {
+            width: 1vw;
+            margin: 0 0.25vw 0 0.5vw;
+            display: inline-block;
+            position: relative;
+            top: 100%;
+            transform: translateY(-100%);
+            z-index: -1;
+        }
+        .warning {
+            background-color: #FFE07D;
+        }
+        .penalty {
+            background-color: #FFC000;
+        }
+        #stid {
+            width: 80vw;
+            padding: 0 3.25vw 0 3.25vw;
+            box-sizing: border-box;
+            line-height: 5vh;
+            display: flex;
+        }
+        #stid span {
+            width: 3.5vw;
+            line-height: 5vh;
+            display: inline-block;
+            font-size: 12px;
+            border-top: 1px solid black;
+            text-align: center;
+        }
+        #footer {
+            width: 100vw;
+            height: 15vh;
+            box-sizing: border-box;
+            padding: 10px;
+        }
+        p {
+            margin: 0;
+        }
+        .footspan {
+            font-size: 10px;
+            color: #808080;
+        }
+    </style>
+    <script>
+        var gradelist = 0, classlist = 0;
+        function clickgrade() {
+            if (gradelist == 0) document.getElementById("gradelistbox").style.visibility = "visible";
+            else if (gradelist == 1) document.getElementById("gradelistbox").style.visibility = "hidden";
+            gradelist = 1 - gradelist;
+        }
+        function selectgrade(gradeN) {
+            document.getElementById("gradename").innerText = gradeN;
+            document.getElementById("gradelistbox").style.visibility = "hidden";
+            gradelist = 0;
+        }
+        function clickclass() {
+            if (classlist == 0) document.getElementById("classlistbox").style.visibility = "visible";
+            else if (classlist == 1) document.getElementById("classlistbox").style.visibility = "hidden";
+            classlist = 1 - classlist;
+        }
+        function selectclass(classN) {
+            document.getElementById("classname").innerText = classN;
+            document.getElementById("classlistbox").style.visibility = "hidden";
+            classlist = 0;
+        }
+    </script>
+</head>
+<body>
+    <div id="header">
+        <div id="imgbox">
+            <a href="">
+                <img id="logoimg" src="./logo.png" />
+            </a>
+        </div>
+        <div id="pwdbox">
+            <input type="password" placeholder="비밀번호"/>
+            <div id="btnbox">
+                <img id="loginbtn" src="./loginbtn.png" />
+            </div>
+        </div>
+    </div>
+    <div id="bgbox">
+        <div id="graphbox">
+            <div id="setbox">
+                <img id="dnldbtn" src="./dnldbtn.png" />
+                <div id="class">
+                    <span id="classname" onclick="clickclass()">4반</span>
+                    <div id="classlistbox">
+                        <ul id="classlist">
+                            <li class="classli" onclick="selectclass('1반');">1반</li>
+                            <li class="classli" onclick="selectclass('2반');">2반</li>
+                            <li class="classli" onclick="selectclass('3반');">3반</li>
+                            <li class="classli" onclick="selectclass('4반');">4반</li>
+                        </ul>
+                    </div>
+                </div>
+                <div id="grade">
+                    <span id="gradename" onclick="clickgrade()">2학년</span>
+                    <div id="gradelistbox">
+                        <ul id="gradelist">
+                            <li class="gradeli" onclick="selectgrade('1학년');">1학년</li>
+                            <li class="gradeli" onclick="selectgrade('2학년');">2학년</li>
+                            <li class="gradeli" onclick="selectgrade('3학년');">3학년</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div id="graph">
+                <div>
+                    <span class="warning" style="height: 1vh"></span>
+                    <span class="penalty" style="height: 49vh"></span>
+                </div>
+                <div>
+                    <span class="warning" style="height: 1vh"></span>
+                    <span class="penalty" style="height: 49vh"></span>
+                </div>
+                <div>
+                    <span class="warning" style="height: 1vh"></span>
+                    <span class="penalty" style="height: 49vh"></span>
+                </div>
+                <div>
+                    <span class="warning" style="height: 1vh"></span>
+                    <span class="penalty" style="height: 49vh"></span>
+                </div>
+                <div>
+                    <span class="warning" style="height: 1vh"></span>
+                    <span class="penalty" style="height: 49vh"></span>
+                </div>
+                <div>
+                    <span class="warning" style="height: 1vh"></span>
+                    <span class="penalty" style="height: 49vh"></span>
+                </div>
+                <div>
+                    <span class="warning" style="height: 1vh"></span>
+                    <span class="penalty" style="height: 49vh"></span>
+                </div>
+                <div>
+                    <span class="warning" style="height: 1vh"></span>
+                    <span class="penalty" style="height: 49vh"></span>
+                </div>
+                <div>
+                    <span class="warning" style="height: 1vh"></span>
+                    <span class="penalty" style="height: 49vh"></span>
+                </div>
+                <div>
+                    <span class="warning" style="height: 1vh"></span>
+                    <span class="penalty" style="height: 49vh"></span>
+                </div>
+                <div>
+                    <span class="warning" style="height: 1vh"></span>
+                    <span class="penalty" style="height: 49vh"></span>
+                </div>
+                <div>
+                    <span class="warning" style="height: 1vh"></span>
+                    <span class="penalty" style="height: 49vh"></span>
+                </div>
+                <div>
+                    <span class="warning" style="height: 1vh"></span>
+                    <span class="penalty" style="height: 49vh"></span>
+                </div>
+                <div>
+                    <span class="warning" style="height: 1vh"></span>
+                    <span class="penalty" style="height: 49vh"></span>
+                </div>
+                <div>
+                    <span class="warning" style="height: 1vh"></span>
+                    <span class="penalty" style="height: 49vh"></span>
+                </div>
+                <div>
+                    <span class="warning" style="height: 1vh"></span>
+                    <span class="penalty" style="height: 49vh"></span>
+                </div>
+                <div>
+                    <span class="warning" style="height: 1vh"></span>
+                    <span class="penalty" style="height: 49vh"></span>
+                </div>
+                <div>
+                    <span class="warning" style="height: 1vh"></span>
+                    <span class="penalty" style="height: 49vh"></span>
+                </div>
+                <div>
+                    <span class="warning" style="height: 1vh"></span>
+                    <span class="penalty" style="height: 49vh"></span>
+                </div>
+                <div>
+                    <span class="warning" style="height: 1vh"></span>
+                    <span class="penalty" style="height: 49vh"></span>
+                </div>
+                <div>
+                    <span class="warning" style="height: 1vh"></span>
+                    <span class="penalty" style="height: 49vh"></span>
+                </div>
+            </div>
+            <div id="stid">
+                <span>2401</span>
+                <span>2402</span>
+                <span>2403</span>
+                <span>2404</span>
+                <span>2405</span>
+                <span>2406</span>
+                <span>2407</span>
+                <span>2408</span>
+                <span>2409</span>
+                <span>2410</span>
+                <span>2411</span>
+                <span>2412</span>
+                <span>2413</span>
+                <span>2414</span>
+                <span>2415</span>
+                <span>2416</span>
+                <span>2417</span>
+                <span>2418</span>
+                <span>2419</span>
+                <span>2420</span>
+                <span>2421</span>
+            </div>
+        </div>
+    </div>
+    <div id="footer">
+        <p>
+            <span class="footspan">부원 : 이성섭 김민지 서원준 류현웅 은태호 이지언</span>
+        </p>
+        <p>
+            <span class="footspan" style="font-weight:bold;">Copyright ⓒ 2021 대구일과학고등학교 생활교육부. All rights reserved.</span>
+        </p>
+    </div>
+</body>
+</html>
