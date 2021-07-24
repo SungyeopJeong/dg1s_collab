@@ -209,7 +209,7 @@
             height: 49vh;
             display: flex;
         }
-        #graph div span {
+        .warning, .penalty {
             width: 0.6vw;
             display: inline-block;
             position: relative;
@@ -224,15 +224,6 @@
         .penalty {
             background-color: #FFC000;
             margin: 0 1.08vw 0 0.07vw;
-        }
-        .detail {
-            display: none;
-            position: absolute;
-            left: 100%;
-            background-color: white;
-        }
-        #graph div span:hover .detail {
-            display: block;
         }
         #stid {
             width: 80vw;
@@ -332,12 +323,8 @@
             <div id="graph">
                 {% for i in range(21) %}
                     <div>
-                        <span class="warning" style="height: {{height[i*2]}}vh">
-                            <span class="detail">경고 {{height[i*2]}}점</span>
-                        </span>
-                        <span class="penalty" style="height: {{height[i*2+1]}}vh">
-                            <span class="detail">벌점 {{height[i*2+1]}}점</span>
-                        </span>
+                        <span class="warning" style="height: {{height[i*2]}}vh"></span>
+                        <span class="penalty" style="height: {{height[i*2+1]}}vh"></span>
                     </div>
                 {% endfor %}
             </div>
