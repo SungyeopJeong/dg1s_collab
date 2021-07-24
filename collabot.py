@@ -284,7 +284,7 @@ def main():
     stid=[]
     height=[]
     
-    for i in range(21):
+    for i in range(1,22):
         if i<10: stid.append(gc+'0'+str(i))
         else : stid.append(gc+str(i))
         height.append(1)
