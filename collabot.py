@@ -279,7 +279,18 @@ def show_stdata():
 
 @application.route('/')
 def main():
-    return render_template("main.html")
+    
+    gc=request.args.get('gc')
+    stid=[]
+    height=[]
+    
+    for i in range(21):
+        if i<10: stid.append(gc+'0'+str(i))
+        elif: stid.append(gc+str(i))
+        height[i*2]=1
+        height[i*2+1]=15
+    
+    return render_template("main.html",stid=stid,height=height)
 
 if __name__ == "__main__":
     application.run(host='0.0.0.0', port=5000)
