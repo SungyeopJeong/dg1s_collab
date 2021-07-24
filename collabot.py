@@ -284,6 +284,7 @@ def main():
     if gc not in ["11","12","13","14","21","22","23","24","31","32","33","34"]: gc="11"
     stid=[]
     height=[]
+    titles=[]
     
     fr=open("/home/ubuntu/dg1s_collab/student_data.txt","r")
     lines=fr.readlines()
@@ -292,22 +293,50 @@ def main():
     for i in range(21):
         if i<9: stid.append(gc+'0'+str(i+1))
         else : stid.append(gc+str(i+1))
+            
         index=(int(gc[0])-1)*4+int(gc[1])-1
-        height.append(lines[index*21+i].split(' ')[1])
-        height.append(lines[index*21+i].split(' ')[2])
+        line=lines[index*21+i].split(' ')
+        height.append(line[1])
+        height.append(line[2])
+        
+        warning=line[1]
+        penalty=line[2]
+        reasons=line[3:]
+        title="경고 "+warning+"회, 벌점 "+penalty+"점"
+        if len(reasons)!=1:
+            reasonmsg=""
+            for reason in reasons:
+                if reason=="none": continue
+                reasonmsg+="\n"+reason.replace('_',' ')[:10]+' '+reason.replace('_',' ')[10:]
+            title+="\n사유 :"+reasons
+        titles.append(title)
     
-    return render_template("main.html",stid=stid,height=height)
+    return render_template("main.html",stid=stid,height=height,titles=titles)
 
-if __name__ == "__main__":
-    application.run(host='0.0.0.0', port=5000)
-'''
-@application.route('/excel', methods=['POST'])
+@application.route('/excel')
 def to_excel(): # 엑셀 파일로 생성
     
-    wb = openpyxl.load_workbook('Gbob.xlsx',data_only=True) # 엑셀 기본 형식
+    wb = openpyxl.load_workbook('경고 및 벌점 표.xlsx',data_only=True) # 엑셀 기본 형식
     
-    fr=open("/home/ubuntu/dg1s_bot/final save.txt","r") # 엑셀 채워 넣기
+    fr=open("/home/ubuntu/dg1s_collab/student_data.txt","r") # 엑셀 채워 넣기
     lines=fr.readlines()
+    fr.close()
+    for line in lines:
+        data=line.rstrip('\n').split(' ')
+        if len(data)<4: continue
+        datastid=data[0]
+        datawarning=data[1]
+        datapenalty=data[2]
+        datareason=data[3:]
+        if stid==datastid:
+            printmsg="[경고/벌점 현황]\n학번 : "+stid+"\n경고 "+datawarning+"회, 벌점 "+datapenalty+"점"
+            if len(datareason)!=1:
+                reasons=""
+                for reason in datareason:
+                    if reason=="none": continue
+                    reasons+="\n"+reason.replace('_',' ')[:10]+' '+reason.replace('_',' ')[10:]
+                printmsg+="\n사유 :"+reasons
+    
     for line in lines:
         if line==lines[0]: continue
         if "none" in line: continue
@@ -319,7 +348,6 @@ def to_excel(): # 엑셀 파일로 생성
         if 4<=col and col<=16:
             sheet=wb[dstid[:2]]
             sheet.cell(row,col).value=dseat
-    fr.close()
     
     sh = wb['통계']
     j = 0
@@ -346,6 +374,10 @@ def to_excel(): # 엑셀 파일로 생성
         }
     }
     return jsonify(res)
+
+if __name__ == "__main__":
+    application.run(host='0.0.0.0', port=5000)
+'''
 
 filename=""
 
