@@ -308,7 +308,7 @@ def main():
             for reason in reasons:
                 if reason=="none": continue
                 reasonmsg+="\n"+reason.replace('_',' ')[:10]+' '+reason.replace('_',' ')[10:]
-        title+="\n사유 :"+reasonmsg
+            title+="\n사유 :"+reasonmsg
         titles.append(title)
     
     return render_template("main.html",stid=stid,height=height,titles=titles)
