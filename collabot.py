@@ -332,7 +332,7 @@ def to_excel(): # 엑셀 파일로 생성
         col=5
         for reason in datareason:
             if reason=="none" or reason=="": continue
-            sheet.cell(row,col).value=reason
+            sheet.cell(row,col).value=reason.replace('_',' ')[:10]+' '+reason.replace('_',' ')[10:]
             col+=1
     
     wb.save("경고 및 벌점 표.xlsx")
