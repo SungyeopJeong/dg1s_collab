@@ -320,8 +320,8 @@
             <div id="graph">
                 {% for i in range(21) %}
                     <div>
-                        <span class="warning" style="height: "+{{height[i*2]|string}}+"vh"></span>
-                        <span class="penalty" style="height: "+{{height[i*2+1]|string}}+"vh"></span>
+                        <span class="warning" style={{height[i*2]}}></span>
+                        <span class="penalty" style={{height[i*2+1]}}></span>
                     </div>
                 {% endfor %}
             </div>
