@@ -295,7 +295,7 @@ def main():
         else : stid.append(gc+str(i+1))
             
         index=(int(gc[0])-1)*4+int(gc[1])-1
-        line=lines[index*21+i].split(' ')
+        line=lines[index*21+i].rstrip('\n').split(' ')
         height.append(line[1])
         height.append(line[2])
         
