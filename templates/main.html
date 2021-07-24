@@ -318,113 +318,17 @@
                 </div>
             </div>
             <div id="graph">
-                <div>
-                    <span class="warning" style="height: 1vh"></span>
-                    <span class="penalty" style="height: 49vh"></span>
-                </div>
-                <div>
-                    <span class="warning" style="height: 1vh"></span>
-                    <span class="penalty" style="height: 49vh"></span>
-                </div>
-                <div>
-                    <span class="warning" style="height: 1vh"></span>
-                    <span class="penalty" style="height: 49vh"></span>
-                </div>
-                <div>
-                    <span class="warning" style="height: 1vh"></span>
-                    <span class="penalty" style="height: 49vh"></span>
-                </div>
-                <div>
-                    <span class="warning" style="height: 1vh"></span>
-                    <span class="penalty" style="height: 49vh"></span>
-                </div>
-                <div>
-                    <span class="warning" style="height: 1vh"></span>
-                    <span class="penalty" style="height: 49vh"></span>
-                </div>
-                <div>
-                    <span class="warning" style="height: 1vh"></span>
-                    <span class="penalty" style="height: 49vh"></span>
-                </div>
-                <div>
-                    <span class="warning" style="height: 1vh"></span>
-                    <span class="penalty" style="height: 49vh"></span>
-                </div>
-                <div>
-                    <span class="warning" style="height: 1vh"></span>
-                    <span class="penalty" style="height: 49vh"></span>
-                </div>
-                <div>
-                    <span class="warning" style="height: 1vh"></span>
-                    <span class="penalty" style="height: 49vh"></span>
-                </div>
-                <div>
-                    <span class="warning" style="height: 1vh"></span>
-                    <span class="penalty" style="height: 49vh"></span>
-                </div>
-                <div>
-                    <span class="warning" style="height: 1vh"></span>
-                    <span class="penalty" style="height: 49vh"></span>
-                </div>
-                <div>
-                    <span class="warning" style="height: 1vh"></span>
-                    <span class="penalty" style="height: 49vh"></span>
-                </div>
-                <div>
-                    <span class="warning" style="height: 1vh"></span>
-                    <span class="penalty" style="height: 49vh"></span>
-                </div>
-                <div>
-                    <span class="warning" style="height: 1vh"></span>
-                    <span class="penalty" style="height: 49vh"></span>
-                </div>
-                <div>
-                    <span class="warning" style="height: 1vh"></span>
-                    <span class="penalty" style="height: 49vh"></span>
-                </div>
-                <div>
-                    <span class="warning" style="height: 1vh"></span>
-                    <span class="penalty" style="height: 49vh"></span>
-                </div>
-                <div>
-                    <span class="warning" style="height: 1vh"></span>
-                    <span class="penalty" style="height: 49vh"></span>
-                </div>
-                <div>
-                    <span class="warning" style="height: 1vh"></span>
-                    <span class="penalty" style="height: 49vh"></span>
-                </div>
-                <div>
-                    <span class="warning" style="height: 1vh"></span>
-                    <span class="penalty" style="height: 49vh"></span>
-                </div>
-                <div>
-                    <span class="warning" style="height: 1vh"></span>
-                    <span class="penalty" style="height: 49vh"></span>
-                </div>
+                {% for i in range(21) %}
+                    <div>
+                        <span class="warning" style="height: "+{{height[i*2]}}></span>
+                        <span class="penalty" style="height: "+{{height[i*2+1]}}></span>
+                    </div>
+                {% endfor %}
             </div>
             <div id="stid">
-                <span>2401</span>
-                <span>2402</span>
-                <span>2403</span>
-                <span>2404</span>
-                <span>2405</span>
-                <span>2406</span>
-                <span>2407</span>
-                <span>2408</span>
-                <span>2409</span>
-                <span>2410</span>
-                <span>2411</span>
-                <span>2412</span>
-                <span>2413</span>
-                <span>2414</span>
-                <span>2415</span>
-                <span>2416</span>
-                <span>2417</span>
-                <span>2418</span>
-                <span>2419</span>
-                <span>2420</span>
-                <span>2421</span>
+                {% for i in range(21) %}
+                    <span>{{stid[i]}}</span>
+                {% endfor %}
             </div>
         </div>
     </div>
